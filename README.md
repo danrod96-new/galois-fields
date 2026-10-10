@@ -11,16 +11,13 @@ GF(p) and GF(p^n). It covers:
 - operation tables;
 - conversion between polynomial and exponential (α^k) notation.
 
-It is the successor of the `campos_finitos` toolbox, upgraded for current
-Scilab versions and renamed with English function names.
-
 Author: Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
 
 ## Requirements
 
 - Scilab 6.1 or later. Tested with Scilab 2024.0.0. It uses the Scilab 6 C
   gateway API (`api_scilab.h`, "csci6" gateways), which is the current API.
-- A C compiler that Scilab can use (`haveacompiler()` must return `%t`): gcc
+- A C compiler that Scilab can use (`haveacompiler()` must return `T`): gcc
   or clang on Linux/macOS, or the Visual Studio / MinGW toolbox on Windows.
 
 ## Building and loading
@@ -120,42 +117,7 @@ Every function has a help page with its arguments, a description and a
 worked example; start with `help galois_fields` for an overview. The page
 sources are in `help/en_US`.
 
-## Migrating from campos_finitos
-
-| campos_finitos | galois_fields |
-|---|---|
-| `cf_crear_campo` | `gf_create_field` |
-| `cf_orden` | `gf_order` |
-| `cf_polinomio_minimo` | `gf_minimal_polynomial` |
-| `cf_devolver_pol_prim_def` | `gf_default_primitive_polynomial` |
-| `cf_es_pol_primitivo` | `gf_is_primitive_polynomial` |
-| `cf_devolver_pol_prim` | `gf_primitive_polynomials` |
-| `cf_sumar_elementos` | `gf_add` |
-| `cf_restar_elementos` | `gf_subtract` |
-| `cf_producto_elementos`, `cf_prod_elem_prim` | `gf_multiply` |
-| `cf_dividir_elementos`, `cf_div_elem_prim` | `gf_divide` |
-| `cf_potencia_elementos`, `cf_pot_elem_prim` | `gf_power` |
-| `cf_sumar_polinomios` | `gf_poly_add` |
-| `cf_restar_polinomios` | `gf_poly_subtract` |
-| `cf_producto_polinomios` | `gf_poly_multiply` |
-| `cf_dividir_polinomios` | `gf_poly_divide` |
-| `cf_potencia_polinomios` | `gf_poly_power` |
-| `cf_es_primo` | `gf_is_prime` |
-| `cf_congruencia_mod_p` | `gf_mod` |
-| `cf_elementos_primitivos` | `gf_primitive_elements` |
-| `cf_formato_exponencial` | `gf_to_exponential` |
-| `cf_formato_polinomial` | `gf_to_polynomial` |
-| `cf_grado` | `gf_degree` |
-| `cf_primo_caracteristico` | `gf_characteristic` |
-| `cf_polinomio_primitivo` | `gf_primitive_polynomial` |
-| `cf_elementos_campos` | `gf_elements` |
-| `cf_tabla_adicion`, `cf_tabla_sustraccion`, `cf_tabla_producto`, `cf_tabla_division` | `gf_addition_table`, `gf_subtraction_table`, `gf_multiplication_table`, `gf_division_table` |
-| `arreglo_es_cero`, `arreglo_es_uno`, `arreglos_son_iguales` | `gf_is_zero`, `gf_is_one`, `gf_are_equal` |
-
-The field list layout is unchanged, so fields and coefficient arrays stored
-by old scripts still work.
-
-### Behaviour changes
+## Behaviour changes
 
 - Invalid arguments raise real Scilab errors, which you can catch with
   `try`/`catch`. The old functions displayed a message and returned 0.
