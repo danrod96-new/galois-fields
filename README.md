@@ -173,7 +173,6 @@ by old scripts still work.
 
 ## Not included yet
 
-- **License.** See `license.txt`.
 - **Translations of the help.** Only English pages exist. Pages in another
   language go in a sibling folder such as `help/es_ES`, which `builder.sce`
   picks up automatically.
