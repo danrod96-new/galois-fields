@@ -1,11 +1,7 @@
 galois_fields 2.0.0 (2026-10-10)
-    * Renamed the toolbox from campos_finitos to galois_fields; all functions
-      now use English names with the gf_ prefix (see README.md for the
-      mapping from the old cf_ names).
     * Ported to Scilab 6.1+ (tested with 2024.0.0): Scilab 6 C gateway API
       ("csci6"), current toolbox skeleton builder/loader/cleaner scripts.
-    * Rewrote the C core library (src/c), which was missing from the
-      distributed sources.
+    * Rewrote the C core library (src/c).
     * Invalid arguments now raise Scilab errors; functions no longer print
       informational text.
     * gf_create_field picks a default primitive polynomial for any degree n.
