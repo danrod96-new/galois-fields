@@ -50,9 +50,9 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-gf_is_primitive_polynomial([1 1 0 0 1], 2, 4)   // %t: 1 + x + x^4
-gf_is_primitive_polynomial([1 0 0 1 1], 2, 4)   // %t: 1 + x^3 + x^4
-gf_is_primitive_polynomial([1 1 1 1 1], 2, 4)   // %f: irreducible, but x^5 = 1
+gf_is_primitive_polynomial([1 1 0 0 1], 2, 4)   // T: 1 + x + x^4
+gf_is_primitive_polynomial([1 0 0 1 1], 2, 4)   // T: 1 + x^3 + x^4
+gf_is_primitive_polynomial([1 1 1 1 1], 2, 4)   // F: irreducible, but x^5 = 1
 ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -69,7 +69,7 @@ gf_is_primitive_polynomial([1 1 1 1 1], 2, 4)   // %f: irreducible, but x^5 = 1
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_es_pol_primitivo</literal>. Returns a boolean.</para>
+                    <para>Refactoring of the function/toolbox. Returns a boolean.</para>
                 </revdescription>
             </revision>
         </revhistory>

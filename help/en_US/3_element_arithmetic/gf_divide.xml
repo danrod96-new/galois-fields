@@ -79,7 +79,7 @@ end
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_dividir_elementos</literal> and <literal>cf_div_elem_prim</literal>. Accepts several elements at once; invalid arguments raise errors.</para>
+                    <para>Refactoring of the function/toolbox. Accepts several elements at once; invalid arguments raise errors.</para>
                 </revdescription>
             </revision>
         </revhistory>

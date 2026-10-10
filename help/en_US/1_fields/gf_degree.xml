@@ -54,7 +54,7 @@ gf_degree(F)   // 2
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_grado</literal> (campos_finitos toolbox).</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>

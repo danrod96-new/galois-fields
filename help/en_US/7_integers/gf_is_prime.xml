@@ -25,7 +25,7 @@
             <varlistentry>
                 <term>tf</term>
                 <listitem>
-                    <para>Boolean matrix of the same size as x: <literal>%t</literal> where the entry is prime.</para>
+                    <para>Boolean matrix of the same size as x: <literal>T</literal> where the entry is prime.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -37,7 +37,7 @@
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-gf_is_prime([0 1 2 9 97])      // [%f %f %t %f %t]
+gf_is_prime([0 1 2 9 97])      // [F F  T F T]
 x = 1:30;
 x(gf_is_prime(x))              // primes up to 30
 ]]></programlisting>
@@ -56,7 +56,7 @@ x(gf_is_prime(x))              // primes up to 30
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_es_primo</literal>. Accepts a matrix and returns booleans.</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>

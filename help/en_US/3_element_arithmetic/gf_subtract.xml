@@ -71,7 +71,7 @@ gf_subtract(F, [0 1 0 0], [1 1 0 0])   // [1 0 0 0], as gf_add
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_restar_elementos</literal>. Accepts several elements at once; invalid arguments raise errors.</para>
+                    <para>Refactoring of the function/toolbox. Accepts several elements at once; invalid arguments raise errors.</para>
                 </revdescription>
             </revision>
         </revhistory>

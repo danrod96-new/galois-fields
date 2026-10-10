@@ -25,7 +25,7 @@
             <varlistentry>
                 <term>p</term>
                 <listitem>
-                    <para>Prime number: the characteristic of the field, at most 2^20.</para>
+                    <para>Prime number: the characteristic of the field.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -61,7 +61,7 @@ gf_poly_add([1 1 1], [1 1 1], 2)     // 0
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_sumar_polinomios</literal>. Operands of different lengths are accepted and the result is trimmed.</para>
+                    <para>Refactoring of the function/toolbox. Operands of different lengths are accepted and the result is trimmed.</para>
                 </revdescription>
             </revision>
         </revhistory>

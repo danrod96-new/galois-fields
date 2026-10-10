@@ -72,7 +72,7 @@ gf_add(P, [3 4 5], 6)             // [2 3 4]
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_sumar_elementos</literal>. Accepts several elements at once; invalid arguments raise errors.</para>
+                    <para>Refactoring of the function/toolbox. Accepts several elements at once; invalid arguments raise errors.</para>
                 </revdescription>
             </revision>
         </revhistory>

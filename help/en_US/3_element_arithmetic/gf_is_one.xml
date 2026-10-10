@@ -25,7 +25,7 @@
             <varlistentry>
                 <term>tf</term>
                 <listitem>
-                    <para><literal>%t</literal> if the first entry of a is 1 and all the others are 0.</para>
+                    <para><literal>T</literal> if the first entry of a is 1 and all the others are 0.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
@@ -38,8 +38,8 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 F = gf_create_field(2, 4);
-gf_is_one(gf_power(F, [0 1 0 0], 15))   // %t
-gf_is_one([0 1 0 0])                    // %f
+gf_is_one(gf_power(F, [0 1 0 0], 15))   // T
+gf_is_one([0 1 0 0])                    // F
 ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -55,7 +55,7 @@ gf_is_one([0 1 0 0])                    // %f
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>arreglo_es_uno</literal> (campos_finitos toolbox).</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>

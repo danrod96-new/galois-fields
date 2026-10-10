@@ -32,14 +32,14 @@
     </refsection>
     <refsection>
         <title>Description</title>
-        <para><literal>gf_are_equal(a, b)</literal> compares two elements or polynomials. Unlike <literal>and(a == b)</literal>, it returns <literal>%f</literal> instead of raising an error when the sizes differ. Polynomials with trailing zero coefficients are not trimmed first, so <literal>[1 0]</literal> and <literal>[1 0 0]</literal> are different.</para>
+        <para><literal>gf_are_equal(a, b)</literal> compares two elements or polynomials. Unlike <literal>and(a == b)</literal>, it returns <literal>F</literal> instead of raising an error when the sizes differ. Polynomials with trailing zero coefficients are not trimmed first, so <literal>[1 0]</literal> and <literal>[1 0 0]</literal> are different.</para>
     </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 F = gf_create_field(2, 4);
-gf_are_equal(gf_power(F, [0 1 0 0], 15), [1 0 0 0])   // %t
-gf_are_equal([1 0], [1 0 0])                          // %f
+gf_are_equal(gf_power(F, [0 1 0 0], 15), [1 0 0 0])   // T
+gf_are_equal([1 0], [1 0 0])                          // F
 ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -55,7 +55,7 @@ gf_are_equal([1 0], [1 0 0])                          // %f
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>arreglos_son_iguales</literal> (campos_finitos toolbox).</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>

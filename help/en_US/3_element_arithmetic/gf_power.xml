@@ -83,7 +83,7 @@ gf_power(P, 1:6, 3)        // [1 1 6 1 6 6]
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_potencia_elementos</literal> and <literal>cf_pot_elem_prim</literal>. Accepts several elements at once. Fixed: a^(q-1) now gives 1 for non-zero a.</para>
+                    <para>Refactoring of the function/toolbox. Accepts several elements at once. Fixed: a^(q-1) now gives 1 for non-zero a.</para>
                 </revdescription>
             </revision>
         </revhistory>

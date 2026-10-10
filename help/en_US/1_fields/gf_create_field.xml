@@ -94,7 +94,7 @@ P(3)              // [4 1]
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_crear_campo</literal>. A default primitive polynomial is now used for any n (it was only available for n = 1). Invalid arguments raise errors.</para>
+                    <para>Refactoring of the function/toolbox. A default primitive polynomial is now used for any n (it was only available for n = 1). Invalid arguments raise errors.</para>
                 </revdescription>
             </revision>
         </revhistory>

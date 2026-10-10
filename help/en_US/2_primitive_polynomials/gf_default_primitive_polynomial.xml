@@ -67,7 +67,7 @@ gf_default_primitive_polynomial(7, 1)   // [4 1]: x - 3, 3 being the smallest pr
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_devolver_pol_prim_def</literal>. Now available for any degree n.</para>
+                    <para>Refactoring of the function/toolbox. Now available for any degree n.</para>
                 </revdescription>
             </revision>
         </revhistory>

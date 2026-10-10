@@ -65,7 +65,7 @@ gf_to_exponential(F, g)'   // [1 2 4 7 8 11 13 14]
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_elementos_primitivos</literal>. The p ≤ 107 limit for prime fields was removed.</para>
+                    <para>Refactoring of the function/toolbox. The p ≤ 107 limit for prime fields was removed.</para>
                 </revdescription>
             </revision>
         </revhistory>

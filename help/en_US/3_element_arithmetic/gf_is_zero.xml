@@ -25,20 +25,20 @@
             <varlistentry>
                 <term>tf</term>
                 <listitem>
-                    <para><literal>%t</literal> if every entry of a is 0, <literal>%f</literal> otherwise.</para>
+                    <para><literal>T</literal> if every entry of a is 0, <literal>F</literal> otherwise.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
     </refsection>
     <refsection>
         <title>Description</title>
-        <para><literal>gf_is_zero(a)</literal> tests whether a represents the zero element or the zero polynomial. It works on the whole array: for a matrix of several elements, the result is <literal>%t</literal> only if they are all zero.</para>
+        <para><literal>gf_is_zero(a)</literal> tests whether a represents the zero element or the zero polynomial. It works on the whole array: for a matrix of several elements, the result is <literal>T</literal> only if they are all zero.</para>
     </refsection>
     <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-gf_is_zero([0 0 0 0])      // %t
-gf_is_zero([0 1 0 0])      // %f
+gf_is_zero([0 0 0 0])      // T
+gf_is_zero([0 1 0 0])      // F
 ]]></programlisting>
     </refsection>
     <refsection role="see also">
@@ -54,7 +54,7 @@ gf_is_zero([0 1 0 0])      // %f
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>arreglo_es_cero</literal> (campos_finitos toolbox).</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>

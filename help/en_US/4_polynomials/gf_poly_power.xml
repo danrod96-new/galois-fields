@@ -31,7 +31,7 @@
             <varlistentry>
                 <term>p</term>
                 <listitem>
-                    <para>Prime number: the characteristic of the field, at most 2^20.</para>
+                    <para>Prime number: the characteristic of the field.</para>
                 </listitem>
             </varlistentry>
             <varlistentry>
@@ -73,7 +73,7 @@ gf_poly_power([1 1], 0, 2)    // 1
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Renamed from <literal>cf_potencia_polinomios</literal> (campos_finitos toolbox).</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>
