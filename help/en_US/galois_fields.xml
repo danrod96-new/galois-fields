@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="galois_fields" xml:lang="en">
+
+    <refnamediv>
+        <refname>galois_fields</refname>
+        <refpurpose>Overview of the Galois Fields toolbox: finite fields GF(p) and GF(p^n)</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Description</title>
+        <para>The galois_fields toolbox works with finite (Galois) fields GF(p) and GF(p^n), and with polynomials over GF(p). It provides:</para>
+        <itemizedlist>
+            <listitem><para>creation of fields from primitive polynomials: <link linkend="gf_create_field">gf_create_field</link>;</para></listitem>
+            <listitem><para>arithmetic between field elements: <link linkend="gf_add">gf_add</link>, <link linkend="gf_subtract">gf_subtract</link>, <link linkend="gf_multiply">gf_multiply</link>, <link linkend="gf_divide">gf_divide</link>, <link linkend="gf_power">gf_power</link>;</para></listitem>
+            <listitem><para>arithmetic on polynomials over GF(p): <link linkend="gf_poly_add">gf_poly_add</link>, <link linkend="gf_poly_subtract">gf_poly_subtract</link>, <link linkend="gf_poly_multiply">gf_poly_multiply</link>, <link linkend="gf_poly_divide">gf_poly_divide</link>, <link linkend="gf_poly_power">gf_poly_power</link>;</para></listitem>
+            <listitem><para>primitive and minimal polynomials: <link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link>, <link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link>, <link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link>, <link linkend="gf_minimal_polynomial">gf_minimal_polynomial</link>;</para></listitem>
+            <listitem><para>primitive elements: <link linkend="gf_primitive_elements">gf_primitive_elements</link>;</para></listitem>
+            <listitem><para>operation tables of prime fields: <link linkend="gf_addition_table">gf_addition_table</link>, <link linkend="gf_subtraction_table">gf_subtraction_table</link>, <link linkend="gf_multiplication_table">gf_multiplication_table</link>, <link linkend="gf_division_table">gf_division_table</link>;</para></listitem>
+            <listitem><para>conversions between polynomial and exponential notation: <link linkend="gf_to_exponential">gf_to_exponential</link>, <link linkend="gf_to_polynomial">gf_to_polynomial</link>, <link linkend="gf_elements">gf_elements</link>.</para></listitem>
+        </itemizedlist>
+        <para>Fields of order p^n are built from a primitive polynomial f of degree n over GF(p). If α is a root of f, every non-zero element of the field is a power α^k, 0 ≤ k ≤ p^n - 2, and also a polynomial in α of degree &lt; n with coefficients in GF(p).</para>
+    </refsection>
+    <refsection>
+        <title>Data conventions</title>
+        <para>Polynomials over GF(p) are row vectors of integer coefficients in 0 .. p-1, constant term first: <literal>[1 1 0 0 1]</literal> is 1 + x + x⁴. Functions that return polynomials trim them to their degree, and return the zero polynomial as <literal>0</literal>.</para>
+        <para>A field is the list returned by <link linkend="gf_create_field">gf_create_field</link>: <literal>list(p, n, f, elements)</literal>, where <literal>f</literal> is the primitive polynomial (n + 1 coefficients) and <literal>elements</literal> the table of all the elements of the field.</para>
+        <para>Elements of GF(p) are integers 0 .. p-1. Elements of GF(p^n), n &gt; 1, are rows of n coefficients (polynomials in α, constant term first). Functions on elements accept several elements at once: a matrix for n = 1, one element per row for n &gt; 1.</para>
+        <para>In the element table of GF(p^n), n &gt; 1, row 1 is the zero element and row k + 2 is α^k (exponential order). For n = 1 the table is <literal>0:p-1</literal>.</para>
+    </refsection>
+    <refsection>
+        <title>Limits</title>
+        <para>The field order p^n can be at most 2^20 (1 048 576) and the degree n at most 20. Element tables have p^n rows, so large fields use memory accordingly.</para>
+    </refsection>
+    <refsection>
+        <title>Building and loading</title>
+        <para>Run <literal>exec builder.sce</literal> in the toolbox folder once (a C compiler is required), then <literal>exec loader.sce</literal> in each session where the toolbox is needed. The help pages are built only when Scilab runs with its Java interface (not with <literal>scilab-cli</literal>).</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// GF(16) built from the default primitive polynomial 1 + x + x^4
+F = gf_create_field(2, 4);
+gf_primitive_polynomial(F)        // 1 + x + x^4
+
+a = [0 1 0 0];                    // alpha
+b = [1 1 0 0];                    // 1 + alpha = alpha^4
+c = gf_multiply(F, a, b)          // [0 1 1 0] = alpha + alpha^2
+gf_to_exponential(F, c)           // 5: c is alpha^5
+
+// Polynomials over GF(2)
+[r, q] = gf_poly_divide([1 0 1 1], [1 1], 2)   // r = 1, q = [0 0 1]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+            <member><link linkend="gf_multiply">gf_multiply</link></member>
+            <member><link linkend="gf_poly_multiply">gf_poly_multiply</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Toolbox renamed from campos_finitos to galois_fields, with English function names, and ported to Scilab 6.1 and later.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

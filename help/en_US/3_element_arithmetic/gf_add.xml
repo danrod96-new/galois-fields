@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_add" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_add</refname>
+        <refpurpose>Adds elements of a finite field</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>c = gf_add(F, a, b)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>A field created by <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a, b</term>
+                <listitem>
+                    <para>Field elements.</para>
+                    <itemizedlist>
+                        <listitem><para>In GF(p) (n = 1): a matrix of integers in 0 .. p-1, of any size.</para></listitem>
+                        <listitem><para>In GF(p^n), n &gt; 1: a matrix with n columns, one element per row. Each row holds the coefficients of a polynomial in α of degree &lt; n, constant term first.</para></listitem>
+                    </itemizedlist>
+                    <para>Coefficients outside 0 .. p-1 are rejected; reduce them first with <link linkend="gf_mod">gf_mod</link> if needed.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>The result, in the same form as the operands.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_add(F, a, b)</literal> computes a + b in the field F. Addition is done coefficient by coefficient, modulo p.</para>
+        <para>Both operands must contain the same number of elements, or one of them must be a single element; a single element is combined with each element of the other operand. The result has the shape of the operand that holds several elements (of <literal>a</literal> when both have the same number).</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+gf_add(F, [0 1 0 0], [1 1 0 0])   // [1 0 0 0]: alpha + alpha^4 = 1
+
+// Several elements of GF(7) plus 6
+P = gf_create_field(7, 1);
+gf_add(P, [3 4 5], 6)             // [2 3 4]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_subtract">gf_subtract</link></member>
+            <member><link linkend="gf_multiply">gf_multiply</link></member>
+            <member><link linkend="gf_poly_add">gf_poly_add</link></member>
+            <member><link linkend="gf_addition_table">gf_addition_table</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_sumar_elementos</literal>. Accepts several elements at once; invalid arguments raise errors.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

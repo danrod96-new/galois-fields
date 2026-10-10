@@ -1,0 +1,14 @@
+// Unloads the galois_fields toolbox.
+function quitModule()
+    [bOK, ilib] = c_link("gateway_galois_fields");
+    if bOK then
+        ulink(ilib);
+    end
+    [bOK, ilib] = c_link("galois_fields");
+    if bOK then
+        ulink(ilib);
+    end
+endfunction
+
+quitModule();
+clear quitModule;

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_addition_table" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_addition_table</refname>
+        <refpurpose>Addition table of a prime field</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>T = gf_addition_table(F)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>A prime field GF(p) created by <link linkend="gf_create_field">gf_create_field</link> with n = 1.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>T</term>
+                <listitem>
+                    <para>The table: T(i, j) = (i - 1) + (j - 1), for i, j = 1 .. p; T is a p × p matrix.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_addition_table</literal> returns the full table of the operation in GF(p), computed modulo p. Only prime fields (n = 1) are supported; an error is raised for n &gt; 1.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(5, 1);
+gf_addition_table(F)
+// Result:
+// 0 1 2 3 4
+// 1 2 3 4 0
+// 2 3 4 0 1
+// 3 4 0 1 2
+// 4 0 1 2 3
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_subtraction_table">gf_subtraction_table</link></member>
+            <member><link linkend="gf_multiplication_table">gf_multiplication_table</link></member>
+            <member><link linkend="gf_division_table">gf_division_table</link></member>
+            <member><link linkend="gf_add">gf_add</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_tabla_adicion</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

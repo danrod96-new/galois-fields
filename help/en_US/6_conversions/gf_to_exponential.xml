@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_to_exponential" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_to_exponential</refname>
+        <refpurpose>Converts elements of GF(p^n) to exponential notation α^k</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>k = gf_to_exponential(F, a)
+k = gf_to_exponential(F, a, format)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>An extension field GF(p^n), n &gt; 1, created by <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Elements: a matrix with n columns of integers in 0 .. p-1, one element per row (constant term first).</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>format</term>
+                <listitem>
+                    <para><literal>"e"</literal> (default) to return exponents, or <literal>"c"</literal> to return strings.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>k</term>
+                <listitem>
+                    <para>Column vector with one entry per row of a.</para>
+                    <itemizedlist>
+                        <listitem><para>With <literal>"e"</literal>: the integer k such that the element is α^k, in 0 .. p^n - 2, or -1 for the zero element.</para></listitem>
+                        <listitem><para>With <literal>"c"</literal>: the strings <literal>"x^k"</literal>, where x stands for α, or <literal>"0"</literal> for the zero element.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_to_exponential</literal> finds the discrete logarithm of each element to the base α, the root of the field's primitive polynomial. This turns multiplication into addition of exponents modulo p^n - 1. <link linkend="gf_minimal_polynomial">gf_minimal_polynomial</link> takes its element argument in this form.</para>
+        <para>The inverse conversion is a lookup in the element table: α^k is <literal>F(4)(k + 2, :)</literal>. Only extension fields (n &gt; 1) are supported.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+gf_to_exponential(F, [0 1 1 0])            // 5: alpha + alpha^2 = alpha^5
+gf_to_exponential(F, [0 0 0 0; 0 1 1 0], "c")   // ["0"; "x^5"]
+gf_to_exponential(F, F(4))'                // -1, 0, 1, ..., 14
+
+// Back from an exponent to coefficients
+F(4)(5 + 2, :)                             // [0 1 1 0]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_to_polynomial">gf_to_polynomial</link></member>
+            <member><link linkend="gf_elements">gf_elements</link></member>
+            <member><link linkend="gf_minimal_polynomial">gf_minimal_polynomial</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_formato_exponencial</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

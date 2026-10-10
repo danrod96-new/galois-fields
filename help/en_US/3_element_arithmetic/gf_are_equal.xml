@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_are_equal" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_are_equal</refname>
+        <refpurpose>Tests whether two arrays have the same size and entries</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>tf = gf_are_equal(a, b)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>a, b</term>
+                <listitem>
+                    <para>Real matrices: elements or polynomials.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>tf</term>
+                <listitem>
+                    <para><literal>%t</literal> if a and b have the same size and the same entries, <literal>%f</literal> otherwise.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_are_equal(a, b)</literal> compares two elements or polynomials. Unlike <literal>and(a == b)</literal>, it returns <literal>%f</literal> instead of raising an error when the sizes differ. Polynomials with trailing zero coefficients are not trimmed first, so <literal>[1 0]</literal> and <literal>[1 0 0]</literal> are different.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+gf_are_equal(gf_power(F, [0 1 0 0], 15), [1 0 0 0])   // %t
+gf_are_equal([1 0], [1 0 0])                          // %f
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_is_zero">gf_is_zero</link></member>
+            <member><link linkend="gf_is_one">gf_is_one</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>arreglos_son_iguales</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

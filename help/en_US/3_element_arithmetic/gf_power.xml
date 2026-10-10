@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_power" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_power</refname>
+        <refpurpose>Raises elements of a finite field to an integer power</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>c = gf_power(F, a, e)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>A field created by <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Field elements.</para>
+                    <itemizedlist>
+                        <listitem><para>In GF(p) (n = 1): a matrix of integers in 0 .. p-1, of any size.</para></listitem>
+                        <listitem><para>In GF(p^n), n &gt; 1: a matrix with n columns, one element per row. Each row holds the coefficients of a polynomial in α of degree &lt; n, constant term first.</para></listitem>
+                    </itemizedlist>
+                    <para>Coefficients outside 0 .. p-1 are rejected; reduce them first with <link linkend="gf_mod">gf_mod</link> if needed.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>e</term>
+                <listitem>
+                    <para>Exponent: a non-negative integer scalar.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>a^e for each element of a, in the same form as a.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_power(F, a, e)</literal> computes a^e in the field F for every element of a.</para>
+        <itemizedlist>
+            <listitem><para>a^0 is 1 for non-zero a.</para></listitem>
+            <listitem><para>0^e is 0 for e &gt; 0, and 0^0 raises an error.</para></listitem>
+            <listitem><para>Since every non-zero element satisfies a^(q-1) = 1, with q = p^n, the exponent can be arbitrarily large.</para></listitem>
+        </itemizedlist>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+alpha = [0 1 0 0];
+gf_power(F, alpha, 4)      // [1 1 0 0]: alpha^4 = 1 + alpha
+gf_power(F, alpha, 15)     // [1 0 0 0]: alpha^15 = 1
+gf_to_exponential(F, gf_power(F, alpha, 100))   // 10, as 100 = 6*15 + 10
+
+P = gf_create_field(7, 1);
+gf_power(P, 1:6, 3)        // [1 1 6 1 6 6]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_multiply">gf_multiply</link></member>
+            <member><link linkend="gf_poly_power">gf_poly_power</link></member>
+            <member><link linkend="gf_primitive_elements">gf_primitive_elements</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_potencia_elementos</literal> and <literal>cf_pot_elem_prim</literal>. Accepts several elements at once. Fixed: a^(q-1) now gives 1 for non-zero a.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

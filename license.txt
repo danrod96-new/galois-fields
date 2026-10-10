@@ -1,0 +1,8 @@
+galois_fields - Copyright (C) Daniel E Rodriguez - UIS.
+
+The license of this toolbox has not been chosen yet. Replace this file with
+the full text of the license you choose, and update the License field in
+DESCRIPTION.
+
+Toolboxes for Scilab are commonly released under GPL-2.0-or-later,
+BSD-3-Clause or CeCILL. Scilab itself is released under GPL-2.0 (Scilab 6+).

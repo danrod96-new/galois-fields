@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_poly_power" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_poly_power</refname>
+        <refpurpose>Raises a polynomial over GF(p) to an integer power</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>c = gf_poly_power(a, e, p)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Polynomial over GF(p): a row vector of integer coefficients in 0 .. p-1, constant term first. For instance <literal>[1 0 1 1]</literal> is 1 + x² + x³.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>e</term>
+                <listitem>
+                    <para>Exponent: a non-negative integer scalar.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Prime number: the characteristic of the field, at most 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>Result as a row of coefficients, constant term first, trimmed to its degree (no trailing zeros). The zero polynomial is returned as <literal>0</literal>.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_poly_power(a, e, p)</literal> computes a^e over GF(p) by repeated squaring.</para>
+        <itemizedlist>
+            <listitem><para>a^0 is the constant polynomial 1 for non-zero a, and 0^0 raises an error.</para></listitem>
+            <listitem><para>The degree of the result, e × deg a, can be at most 100 000.</para></listitem>
+        </itemizedlist>
+        <para>Over GF(p), (a + b)^p = a^p + b^p, so powers of p of a binomial have only two terms.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+gf_poly_power([1 1], 2, 2)    // [1 0 1]: (1 + x)^2 = 1 + x^2
+gf_poly_power([1 1], 3, 3)    // [1 0 0 1]: (1 + x)^3 = 1 + x^3
+gf_poly_power([1 1], 8, 2)    // [1 0 0 0 0 0 0 0 1]
+gf_poly_power([1 1], 0, 2)    // 1
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_poly_multiply">gf_poly_multiply</link></member>
+            <member><link linkend="gf_power">gf_power</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_potencia_polinomios</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

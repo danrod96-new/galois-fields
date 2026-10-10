@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_is_primitive_polynomial" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_is_primitive_polynomial</refname>
+        <refpurpose>Tests whether a polynomial over GF(p) is primitive</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>tf = gf_is_primitive_polynomial(f, p, n)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>f</term>
+                <listitem>
+                    <para>Polynomial of degree n: a row of exactly n + 1 integer coefficients in 0 .. p-1, constant term first, with a non-zero last coefficient.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Prime number: the characteristic of the field, at most 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>n</term>
+                <listitem>
+                    <para>Degree of f: an integer from 1 to 20, with p^n ≤ 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>tf</term>
+                <listitem>
+                    <para><literal>%t</literal> if f is primitive over GF(p), <literal>%f</literal> otherwise.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>A polynomial f of degree n over GF(p) is primitive when it is irreducible and its roots have multiplicative order p^n - 1, so that they generate the multiplicative group of GF(p^n). Only primitive polynomials can be used with <link linkend="gf_create_field">gf_create_field</link>.</para>
+        <para>The test computes the order of x modulo f: f is primitive exactly when f(0) ≠ 0 and that order is p^n - 1. The polynomial does not need to be monic.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+gf_is_primitive_polynomial([1 1 0 0 1], 2, 4)   // %t: 1 + x + x^4
+gf_is_primitive_polynomial([1 0 0 1 1], 2, 4)   // %t: 1 + x^3 + x^4
+gf_is_primitive_polynomial([1 1 1 1 1], 2, 4)   // %f: irreducible, but x^5 = 1
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link></member>
+            <member><link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link></member>
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_es_pol_primitivo</literal>. Returns a boolean.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

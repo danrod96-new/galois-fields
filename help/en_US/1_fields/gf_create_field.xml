@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_create_field" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_create_field</refname>
+        <refpurpose>Creates the finite field GF(p^n) from a primitive polynomial</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>F = gf_create_field(p, n)
+F = gf_create_field(p, n, f)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Prime number: the characteristic of the field, at most 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>n</term>
+                <listitem>
+                    <para>Degree of the field over GF(p): an integer from 1 to 20, with p^n ≤ 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>f</term>
+                <listitem>
+                    <para>Primitive polynomial of degree n over GF(p): a row of n + 1 integer coefficients in 0 .. p-1, constant term first, with a non-zero last coefficient. It does not need to be monic. When it is omitted, the polynomial returned by <link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link> is used.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>The field: <literal>list(p, n, f, elements)</literal>.</para>
+                    <itemizedlist>
+                        <listitem><para><literal>F(1)</literal> is p and <literal>F(2)</literal> is n.</para></listitem>
+                        <listitem><para><literal>F(3)</literal> is the primitive polynomial (n + 1 coefficients, constant term first).</para></listitem>
+                        <listitem><para><literal>F(4)</literal> is the table of all the elements. For n = 1 it is the row <literal>0:p-1</literal>. For n &gt; 1 it is a p^n × n matrix: row 1 is the zero element and row k + 2 is α^k, α being a root of f.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_create_field</literal> builds the field of order p^n used by the other functions of the toolbox.</para>
+        <para>The polynomial f must be primitive, not only irreducible: its roots must generate the multiplicative group of the field, so that every non-zero element is a power of α. <link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link> tests this, and <link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link> lists all the monic primitive polynomials of a given degree. An error is raised when f is not primitive.</para>
+        <para>For n = 1, f has degree 1 and its root -f(1)/f(2) is a primitive root modulo p.</para>
+        <para>The element table is computed once, when the field is created. It has p^n rows of n doubles.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// GF(16) with the default primitive polynomial 1 + x + x^4
+F = gf_create_field(2, 4);
+F(3)              // [1 1 0 0 1]
+F(4)(1:6, :)      // 0, 1, alpha, alpha^2, alpha^3, alpha^4 = 1 + alpha
+
+// The same field built from another primitive polynomial: 1 + x^3 + x^4
+G = gf_create_field(2, 4, [1 0 0 1 1]);
+
+// 1 + x + x^2 + x^3 + x^4 is irreducible but not primitive
+try
+    gf_create_field(2, 4, [1 1 1 1 1]);
+catch
+    disp(lasterror())
+end
+
+// The prime field GF(7); its default polynomial is x - 3 = x + 4
+P = gf_create_field(7, 1);
+P(3)              // [4 1]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link></member>
+            <member><link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link></member>
+            <member><link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link></member>
+            <member><link linkend="gf_elements">gf_elements</link></member>
+            <member><link linkend="gf_order">gf_order</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_crear_campo</literal>. A default primitive polynomial is now used for any n (it was only available for n = 1). Invalid arguments raise errors.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_primitive_elements" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_primitive_elements</refname>
+        <refpurpose>Primitive elements (generators of the multiplicative group) of a finite field</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>g = gf_primitive_elements(F)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>A field created by <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>g</term>
+                <listitem>
+                    <para>The primitive elements.</para>
+                    <itemizedlist>
+                        <listitem><para>For n = 1: a row of integers in increasing order (the primitive roots modulo p).</para></listitem>
+                        <listitem><para>For n &gt; 1: a matrix with one element per row: α^k for every k in 1 .. p^n - 2 coprime to p^n - 1, in increasing order of k.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para>An element is primitive when its powers give every non-zero element of the field, that is, when its multiplicative order is p^n - 1. A field of order q has φ(q - 1) primitive elements, φ being Euler's totient function.</para>
+        <para>For n &gt; 1, α (a root of the primitive polynomial) is primitive, and α^k is primitive exactly when gcd(k, q - 1) = 1. For n = 1, the primitive elements are the powers r^k of the root r of the field's degree-1 polynomial, for the same values of k.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// Primitive roots modulo 7
+gf_primitive_elements(gf_create_field(7, 1))   // [3 5]
+
+// GF(16): 8 primitive elements, alpha^k for k coprime to 15
+F = gf_create_field(2, 4);
+g = gf_primitive_elements(F);
+gf_to_exponential(F, g)'   // [1 2 4 7 8 11 13 14]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link></member>
+            <member><link linkend="gf_to_exponential">gf_to_exponential</link></member>
+            <member><link linkend="gf_power">gf_power</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_elementos_primitivos</literal>. The p ≤ 107 limit for prime fields was removed.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

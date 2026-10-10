@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_to_polynomial" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_to_polynomial</refname>
+        <refpurpose>Converts rows of coefficients to Scilab polynomials</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>P = gf_to_polynomial(c)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>Real matrix with one polynomial or element per row, constant term first.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>P</term>
+                <listitem>
+                    <para>Column vector of Scilab polynomials in x, one per row of c.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_to_polynomial</literal> turns the coefficient rows used throughout the toolbox into Scilab polynomials, for display or for use with Scilab's own polynomial functions. It does not need a field and does not reduce the coefficients modulo p.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+gf_to_polynomial([1 1 0 0 1; 0 1 1 0 0])   // [1 + x + x^4; x + x^2]
+
+F = gf_create_field(2, 4);
+gf_to_polynomial(gf_primitive_elements(F))
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_to_exponential">gf_to_exponential</link></member>
+            <member><link linkend="gf_elements">gf_elements</link></member>
+            <member><link linkend="gf_primitive_polynomial">gf_primitive_polynomial</link></member>
+            <member><link type="scilab" linkend="scilab.help/poly">poly</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_formato_polinomial</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

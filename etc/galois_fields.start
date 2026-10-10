@@ -1,0 +1,47 @@
+// Loads the galois_fields toolbox (run by loader.sce or by ATOMS).
+function galois_fieldslib = startModule()
+    TOOLBOX_NAME  = "galois_fields";
+    TOOLBOX_TITLE = "Galois Fields";
+
+    mprintf("Start " + TOOLBOX_TITLE + "\n");
+
+    if isdef("galois_fieldslib") then
+        warning("Galois Fields library is already loaded");
+        return;
+    end
+
+    etc_tlbx  = get_absolute_file_path("galois_fields.start");
+    etc_tlbx  = getshortpathname(etc_tlbx);
+    root_tlbx = strncpy(etc_tlbx, length(etc_tlbx) - length("\etc\"));
+
+    // Macros
+    mprintf("\tLoad macros\n");
+    pathmacros = pathconvert(root_tlbx) + "macros" + filesep();
+    galois_fieldslib = lib(pathmacros);
+
+    // Gateways (C library and Scilab functions written in C)
+    verboseMode = ilib_verbose();
+    ilib_verbose(0);
+    mprintf("\tLoad gateways\n");
+    exec(pathconvert(root_tlbx + "/sci_gateway/loader_gateway.sce", %f));
+    ilib_verbose(verboseMode);
+
+    // Help, if it has been built
+    if or(getscilabmode() == ["NW"; "STD"]) then
+        path_addchapter = pathconvert(root_tlbx + "/jar");
+        if isdir(path_addchapter) then
+            mprintf("\tLoad help\n");
+            add_help_chapter(TOOLBOX_TITLE, path_addchapter, %F);
+        end
+    end
+
+    // Demos
+    if or(getscilabmode() == ["NW"; "STD"]) then
+        mprintf("\tLoad demos\n");
+        pathdemos = pathconvert(root_tlbx + "/demos/galois_fields.dem.gateway.sce", %F, %T);
+        add_demo(TOOLBOX_TITLE, pathdemos);
+    end
+endfunction
+
+galois_fieldslib = startModule();
+clear startModule;

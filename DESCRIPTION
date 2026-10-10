@@ -1,0 +1,29 @@
+Toolbox: galois_fields
+
+Title: Galois Fields
+
+Summary: Arithmetic in finite fields GF(p) and GF(p^n) and on polynomials over GF(p)
+
+Version: 2.0.0
+
+Author: Daniel E Rodriguez
+
+Maintainer: Daniel E Rodriguez
+
+Category: Mathematics
+
+Entity: Universidad Industrial de Santander (UIS)
+
+License: TO BE CHOSEN - see license.txt
+
+ScilabVersion: >= 6.1
+
+Depends:
+
+Date: 2026-10-10
+
+Description: Builds finite fields from primitive polynomials and provides
+ element arithmetic (add, subtract, multiply, divide, power), arithmetic on
+ polynomials over GF(p), primitive and minimal polynomials, primitive
+ elements, operation tables and conversion between polynomial and
+ exponential notation. Successor of the campos_finitos toolbox.

@@ -1,0 +1,27 @@
+galois_fields 2.0.0 (2026-10-10)
+    * Renamed the toolbox from campos_finitos to galois_fields; all functions
+      now use English names with the gf_ prefix (see README.md for the
+      mapping from the old cf_ names).
+    * Ported to Scilab 6.1+ (tested with 2024.0.0): Scilab 6 C gateway API
+      ("csci6"), current toolbox skeleton builder/loader/cleaner scripts.
+    * Rewrote the C core library (src/c), which was missing from the
+      distributed sources.
+    * Invalid arguments now raise Scilab errors; functions no longer print
+      informational text.
+    * gf_create_field picks a default primitive polynomial for any degree n.
+    * gf_is_primitive_polynomial and gf_is_prime return booleans.
+    * Element operations work on several elements at once.
+    * Polynomial addition/subtraction accept operands of different lengths.
+    * Removed the p <= 107 limit of the primitive elements computation.
+    * Fixed: a^(q-1) now returns 1 for non-zero a.
+    * Rewrote the Hamming (7,4) demo (non-interactive) and added a GF(2^4)
+      arithmetic demo.
+    * Added unit tests (tests/unit_tests).
+    * Added help pages for every function, an overview page, and the help
+      build (Scilab with Java only; skipped by scilab-cli).
+    * Replaced borrar.sce with the generated cleaner.sce.
+ -- Daniel E Rodriguez (UIS)
+
+campos_finitos 1.0
+    * Original release.
+ -- Daniel E Rodriguez (UIS)

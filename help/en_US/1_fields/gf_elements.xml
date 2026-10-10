@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Part of the galois_fields toolbox.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_elements" xml:lang="en">
+
+    <refnamediv>
+        <refname>gf_elements</refname>
+        <refpurpose>Elements of a finite field as Scilab polynomials</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Syntax</title>
+        <synopsis>e = gf_elements(F)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Arguments</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>A field created by <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>e</term>
+                <listitem>
+                    <para>Column vector of p^n Scilab polynomials in x.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Description</title>
+        <para><literal>gf_elements(F)</literal> returns every element of F as a polynomial in x, in the order of the element table <literal>F(4)</literal>:</para>
+        <itemizedlist>
+            <listitem><para>for n = 1: 0, 1, ..., p-1;</para></listitem>
+            <listitem><para>for n &gt; 1: 0, then α^0, α^1, ..., α^(p^n - 2), where x stands for α.</para></listitem>
+        </itemizedlist>
+        <para>Use <literal>F(4)</literal> directly to get the same elements as coefficient rows, which is the form the arithmetic functions accept.</para>
+    </refsection>
+    <refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// GF(4): 0, 1, alpha, alpha^2 = 1 + alpha
+gf_elements(gf_create_field(2, 2))
+
+// GF(3): 0, 1, 2
+gf_elements(gf_create_field(3, 1))
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>See also</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+            <member><link linkend="gf_to_polynomial">gf_to_polynomial</link></member>
+            <member><link linkend="gf_to_exponential">gf_to_exponential</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>History</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Renamed from <literal>cf_elementos_campos</literal> (campos_finitos toolbox).</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
