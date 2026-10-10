@@ -26,4 +26,4 @@ Description: Builds finite fields from primitive polynomials and provides
  element arithmetic (add, subtract, multiply, divide, power), arithmetic on
  polynomials over GF(p), primitive and minimal polynomials, primitive
  elements, operation tables and conversion between polynomial and
- exponential notation. Successor of the campos_finitos toolbox.
+ exponential notation.
