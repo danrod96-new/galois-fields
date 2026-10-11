@@ -16,90 +16,91 @@
 
 int gw_check_nin(const char* fname, int nin, int min, int max)
 {
-    if (nin < min || nin > max)
-    {
-        if (min == max)
-        {
-            Scierror(77, _("%s: Wrong number of input argument(s): %d expected.\n"), fname, min);
-        }
-        else
-        {
-            Scierror(77, _("%s: Wrong number of input argument(s): %d to %d expected.\n"), fname, min, max);
-        }
-        return 1;
-    }
-    return 0;
+	if (nin < min || nin > max)
+	{
+		if (min == max) {
+			Scierror(77, _("%s: Wrong number of input argument(s): %d expected.\n"), fname, min);
+		} else {
+			Scierror(77, _("%s: Wrong number of input argument(s): %d to %d expected.\n"), fname, min, max);
+		}
+		return 1;
+	}
+
+	return 0;
 }
 
-int gw_get_real(scilabEnv env, scilabVar var, const char* fname, int pos,
-                double** data, int* rows, int* cols)
+int gw_get_real(scilabEnv env, scilabVar var, const char* fname, int pos, double **data, int *rows, int *cols)
 {
-    if (scilab_isDouble(env, var) == 0 || scilab_isMatrix2d(env, var) == 0 || scilab_isComplex(env, var) == 1)
-    {
-        Scierror(999, _("%s: Wrong type for input argument #%d: A real matrix expected.\n"), fname, pos);
-        return 1;
-    }
-    scilab_getDim2d(env, var, rows, cols);
-    scilab_getDoubleArray(env, var, data);
-    return 0;
+	if (scilab_isDouble(env, var) == 0 || scilab_isMatrix2d(env, var) == 0 || scilab_isComplex(env, var) == 1) {
+		Scierror(999, _("%s: Wrong type for input argument #%d: A real matrix expected.\n"), fname, pos);
+		return 1;
+	}
+
+	scilab_getDim2d(env, var, rows, cols);
+	scilab_getDoubleArray(env, var, data);
+	
+	return 0;
 }
 
 static int is_integer(double v)
 {
-    return isfinite(v) && floor(v) == v && fabs(v) < GW_MAX_EXACT;
+  return isfinite(v) && floor(v) == v && fabs(v) < GW_MAX_EXACT;
 }
 
-int gw_get_scalar_int(scilabEnv env, scilabVar var, const char* fname, int pos, int64_t* value)
+int gw_get_scalar_int(scilabEnv env, scilabVar var, const char *fname, int pos, int64_t *value)
 {
-    double* data = NULL;
-    int rows = 0, cols = 0;
-    if (gw_get_real(env, var, fname, pos, &data, &rows, &cols))
-    {
-        return 1;
-    }
-    if (rows * cols != 1 || !is_integer(data[0]))
-    {
-        Scierror(999, _("%s: Wrong value for input argument #%d: An integer scalar expected.\n"), fname, pos);
-        return 1;
-    }
-    *value = (int64_t)data[0];
-    return 0;
+	double *data = NULL;
+	int rows = 0, cols = 0;
+	if (gw_get_real(env, var, fname, pos, &data, &rows, &cols)) {
+			return 1;
+	}
+
+	if (rows * cols != 1 || !is_integer(data[0])) {
+		Scierror(999, _("%s: Wrong value for input argument #%d: An integer scalar expected.\n"), fname, pos);
+		return 1;
+	}
+
+	*value = (int64_t) data[0];
+	
+	return 0;
 }
 
 int gw_get_scalar_uint(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t* value)
 {
-    int64_t v = 0;
-    if (gw_get_scalar_int(env, var, fname, pos, &v))
-    {
-        return 1;
-    }
-    if (v < 0)
-    {
-        Scierror(999, _("%s: Wrong value for input argument #%d: A non-negative integer expected.\n"), fname, pos);
-        return 1;
-    }
-    *value = (uint64_t)v;
-    return 0;
+	int64_t v = 0;
+
+	if (gw_get_scalar_int(env, var, fname, pos, &v)) {
+		return 1;
+	}
+
+	if (v < 0) {
+		Scierror(999, _("%s: Wrong value for input argument #%d: A non-negative integer expected.\n"), fname, pos);
+		return 1;
+	}
+
+	*value = (uint64_t) v;
+	
+	return 0;
 }
 
 int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t* p)
 {
-    if (gw_get_scalar_uint(env, var, fname, pos, p))
-    {
-        return 1;
-    }
-    if (!gf_is_prime(*p))
-    {
-        Scierror(999, _("%s: Wrong value for input argument #%d: A prime number expected.\n"), fname, pos);
-        return 1;
-    }
-    if (*p > GF_MAX_ORDER)
-    {
-        Scierror(999, _("%s: Wrong value for input argument #%d: The characteristic must not exceed %llu.\n"),
-                 fname, pos, (unsigned long long)GF_MAX_ORDER);
-        return 1;
-    }
-    return 0;
+	if (gw_get_scalar_uint(env, var, fname, pos, p)) {
+		return 1;
+	}
+
+	if (!gf_is_prime(*p)) {
+		Scierror(999, _("%s: Wrong value for input argument #%d: A prime number expected.\n"), fname, pos);
+		
+		return 1;
+	}
+	if (*p > GF_MAX_ORDER) {
+		Scierror(999, _("%s: Wrong value for input argument #%d: The characteristic must not exceed %llu.\n"), fname, pos, (unsigned long long)GF_MAX_ORDER);
+		
+		return 1;
+	}
+
+	return 0;
 }
 
 int gw_get_degree(scilabEnv env, scilabVar var, const char* fname, int pos, int* n)
