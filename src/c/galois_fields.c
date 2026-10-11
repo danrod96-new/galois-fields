@@ -14,121 +14,126 @@
 
 int gf_is_prime(uint64_t n)
 {
-    uint64_t i;
-    if (n < 2)
-    {
-        return 0;
-    }
-    if (n < 4)
-    {
-        return 1;
-    }
-    if (n % 2 == 0 || n % 3 == 0)
-    {
-        return 0;
-    }
-    for (i = 5; i <= n / i; i += 6)
-    {
-        if (n % i == 0 || n % (i + 2) == 0)
-        {
-            return 0;
-        }
-    }
-    return 1;
+	uint64_t i;
+
+	if (n < 2) {
+		return 0;
+	}
+
+	if (n < 4) {
+		return 1;
+	}
+
+	if (n % 2 == 0 || n % 3 == 0) {
+		return 0;
+	}
+
+	for (i = 5; i <= n / i; i += 6) {
+		if (n % i == 0 || n % (i + 2) == 0) {
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
 uint64_t gf_mod(int64_t a, uint64_t m)
 {
-    int64_t r = a % (int64_t)m;
-    return (uint64_t)(r < 0 ? r + (int64_t)m : r);
+  int64_t r = a % (int64_t) m;
+  
+	return (uint64_t) (r < 0 ? r + (int64_t) m : r);
 }
 
 uint64_t gf_pow_mod(uint64_t b, uint64_t e, uint64_t m)
 {
-    uint64_t r = 1 % m;
-    b %= m;
-    while (e > 0)
-    {
-        if (e & 1)
-        {
-            r = (r * b) % m;
-        }
-        b = (b * b) % m;
-        e >>= 1;
-    }
-    return r;
+	uint64_t r = 1 % m;
+	b %= m;
+
+	while (e > 0) {
+		if (e & 1) {
+			r = (r * b) % m;
+		}
+		
+		b = (b * b) % m;
+		e >>= 1;
+	}
+
+	return r;
 }
 
 uint64_t gf_inv_mod(uint64_t a, uint64_t p)
 {
-    /* Fermat: a^(p-2) = a^-1 for prime p. */
-    return gf_pow_mod(a % p, p - 2, p);
+  /* Fermat: a^(p-2) = a^-1 for prime p. */
+  return gf_pow_mod(a % p, p - 2, p);
 }
 
 uint64_t gf_field_order(uint64_t p, int n, uint64_t limit)
 {
-    uint64_t q = 1;
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        if (q > limit / p)
-        {
-            return 0;
-        }
-        q *= p;
-    }
-    return q <= limit ? q : 0;
+	uint64_t q = 1;
+	int i;
+
+	for (i = 0; i < n; i++) {
+		if (q > limit / p) {
+			return 0;
+		}
+
+		q *= p;
+	}
+
+	return q <= limit ? q : 0;
 }
 
 /* Distinct prime factors of m, at most max of them. */
 static int prime_factors(uint64_t m, uint64_t* factors, int max)
 {
-    int count = 0;
-    uint64_t d;
-    for (d = 2; d <= m / d && count < max; d++)
-    {
-        if (m % d == 0)
-        {
-            factors[count++] = d;
-            while (m % d == 0)
-            {
-                m /= d;
-            }
-        }
-    }
-    if (m > 1 && count < max)
-    {
-        factors[count++] = m;
-    }
-    return count;
+	int count = 0;
+	uint64_t d;
+
+	for (d = 2; d <= m / d && count < max; d++) {
+		if (m % d == 0) {
+			factors[count++] = d;
+
+			while (m % d == 0) {
+				m /= d;
+			}
+		}
+	}
+
+	if (m > 1 && count < max) {
+		factors[count++] = m;
+	}
+
+	return count;
 }
 
 uint64_t gf_primitive_root(uint64_t p)
 {
-    uint64_t factors[64];
-    int count, i, ok;
-    uint64_t g;
-    if (p == 2)
-    {
-        return 1;
-    }
-    count = prime_factors(p - 1, factors, 64);
-    for (g = 2; g < p; g++)
-    {
-        ok = 1;
-        for (i = 0; i < count && ok; i++)
-        {
-            if (gf_pow_mod(g, (p - 1) / factors[i], p) == 1)
-            {
-                ok = 0;
-            }
-        }
-        if (ok)
-        {
-            return g;
-        }
-    }
-    return 0;
+	uint64_t factors[64];
+	int count, i, ok;
+	uint64_t g;
+
+	if (p == 2) {
+			return 1;
+	}
+
+	count = prime_factors(p - 1, factors, 64);
+	
+	for (g = 2; g < p; g++) {
+		ok = 1;
+		
+		for (i = 0; i < count && ok; i++) {
+			if (gf_pow_mod(g, (p - 1) / factors[i], p) == 1)
+			{
+					ok = 0;
+			}
+		}
+
+		if (ok) {
+				return g;
+		}
+	}
+
+	return 0;
 }
 
 /* ---- Element arithmetic ---------------------------------------------- */
@@ -137,117 +142,118 @@ uint64_t gf_primitive_root(uint64_t p)
  * writes the n remaining coefficients to r. */
 static void reduce(uint64_t p, int n, const uint64_t* f, uint64_t* t, int len, uint64_t* r)
 {
-    uint64_t inv_lead = gf_inv_mod(f[n], p);
-    uint64_t c;
-    int i, j;
-    for (i = len - 1; i >= n; i--)
-    {
-        c = t[i] % p;
-        if (c == 0)
-        {
-            continue;
-        }
-        c = (c * inv_lead) % p;
-        for (j = 0; j <= n; j++)
-        {
-            t[i - n + j] = (t[i - n + j] + p - (c * f[j]) % p) % p;
-        }
-    }
-    for (j = 0; j < n; j++)
-    {
-        r[j] = j < len ? t[j] % p : 0;
-    }
+	uint64_t inv_lead = gf_inv_mod(f[n], p);
+	uint64_t c;
+	int i, j;
+
+	for (i = len - 1; i >= n; i--) {
+		c = t[i] % p;
+
+		if (c == 0) {
+			continue;
+		}
+
+		c = (c * inv_lead) % p;
+
+		for (j = 0; j <= n; j++) {
+			t[i - n + j] = (t[i - n + j] + p - (c * f[j]) % p) % p;
+		}
+	}
+
+	for (j = 0; j < n; j++) {
+		r[j] = j < len ? t[j] % p : 0;
+	}
 }
 
-int gf_elem_is_zero(int n, const uint64_t* a)
+int gf_elem_is_zero(int n, const uint64_t *a)
 {
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        if (a[i] != 0)
-        {
-            return 0;
-        }
-    }
-    return 1;
+	int i;
+
+	for (i = 0; i < n; i++) {
+		if (a[i] != 0) {
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
-void gf_elem_add(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r)
+void gf_elem_add(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        r[i] = (a[i] + b[i]) % p;
-    }
+	int i;
+
+	for (i = 0; i < n; i++) {
+		r[i] = (a[i] + b[i]) % p;
+	}
 }
 
-void gf_elem_sub(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r)
+void gf_elem_sub(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        r[i] = (a[i] + p - b[i]) % p;
-    }
+	int i;
+
+	for (i = 0; i < n; i++) {
+		r[i] = (a[i] + p - b[i]) % p;
+	}
 }
 
-void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r)
+void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
-    uint64_t t[2 * GF_MAX_DEGREE];
-    int i, j;
-    memset(t, 0, sizeof(t));
-    for (i = 0; i < n; i++)
-    {
-        if (a[i] == 0)
-        {
-            continue;
-        }
-        for (j = 0; j < n; j++)
-        {
-            t[i + j] = (t[i + j] + a[i] * b[j]) % p;
-        }
-    }
-    reduce(p, n, f, t, 2 * n - 1, r);
+	uint64_t t[2 * GF_MAX_DEGREE];
+	int i, j;
+
+	memset(t, 0, sizeof(t));
+
+	for (i = 0; i < n; i++) {
+		if (a[i] == 0) {
+				continue;
+		}
+
+		for (j = 0; j < n; j++) {
+			t[i + j] = (t[i + j] + a[i] * b[j]) % p;
+		}
+	}
+
+	reduce(p, n, f, t, 2 * n - 1, r);
 }
 
-int gf_elem_pow(uint64_t p, int n, const uint64_t* f, const uint64_t* a, uint64_t e, uint64_t* r)
+int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t* a, uint64_t e, uint64_t *r)
 {
-    uint64_t base[GF_MAX_DEGREE];
-    uint64_t q = gf_field_order(p, n, UINT64_MAX / 2);
-    int i;
+	uint64_t base[GF_MAX_DEGREE];
+	uint64_t q = gf_field_order(p, n, UINT64_MAX / 2);
+	int i;
 
-    if (gf_elem_is_zero(n, a))
-    {
-        if (e == 0)
-        {
-            return GF_ERR_DIVISION_BY_ZERO;
-        }
-        memset(r, 0, n * sizeof(uint64_t));
-        return GF_OK;
-    }
+	if (gf_elem_is_zero(n, a)) {
+		if (e == 0){
+			return GF_ERR_DIVISION_BY_ZERO;
+		}
 
-    /* Non-zero elements form a cyclic group of order q - 1. */
-    if (q > 1)
-    {
-        e %= (q - 1);
-    }
+		memset(r, 0, n * sizeof(uint64_t));
+		return GF_OK;
+	}
 
-    memcpy(base, a, n * sizeof(uint64_t));
-    memset(r, 0, n * sizeof(uint64_t));
-    r[0] = 1;
-    while (e > 0)
-    {
-        if (e & 1)
-        {
-            gf_elem_mul(p, n, f, r, base, r);
-        }
-        gf_elem_mul(p, n, f, base, base, base);
-        e >>= 1;
-    }
-    for (i = 0; i < n; i++)
-    {
-        r[i] %= p;
-    }
-    return GF_OK;
+	/* Non-zero elements form a cyclic group of order q - 1. */
+	if (q > 1) {
+		e %= (q - 1);
+	}
+
+	memcpy(base, a, n * sizeof(uint64_t));
+	memset(r, 0, n * sizeof(uint64_t));
+	r[0] = 1;
+
+	while (e > 0) {
+		if (e & 1) {
+			gf_elem_mul(p, n, f, r, base, r);
+		}
+
+		gf_elem_mul(p, n, f, base, base, base);
+		e >>= 1;
+	}
+
+	for (i = 0; i < n; i++){
+		r[i] %= p;
+	}
+
+	return GF_OK;
 }
 
 int gf_elem_div(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r)
