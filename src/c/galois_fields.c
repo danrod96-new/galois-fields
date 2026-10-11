@@ -639,54 +639,55 @@ void gf_poly_add(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int l
 void gf_poly_sub(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
 	int i, len = la > lb ? la : lb;
-	
+
 	for (i = 0; i < len; i++) {
 		r[i] = ((i < la ? a[i] : 0) + p - (i < lb ? b[i] : 0)) % p;
 	}
 }
 
-void gf_poly_mul(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r)
+void gf_poly_mul(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
-    int i, j;
-    memset(r, 0, (la + lb - 1) * sizeof(uint64_t));
-    for (i = 0; i < la; i++)
-    {
-        if (a[i] == 0)
-        {
-            continue;
-        }
-        for (j = 0; j < lb; j++)
-        {
-            r[i + j] = (r[i + j] + a[i] * b[j]) % p;
-        }
-    }
+	int i, j;
+	memset(r, 0, (la + lb - 1) * sizeof(uint64_t));
+
+	for (i = 0; i < la; i++) {
+		if (a[i] == 0) {
+			continue;
+		}
+
+		for (j = 0; j < lb; j++) {
+			r[i + j] = (r[i + j] + a[i] * b[j]) % p;
+		}
+	}
 }
 
-int gf_poly_divmod(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* q, uint64_t* r)
+int gf_poly_divmod(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *q, uint64_t *r)
 {
-    int db = gf_poly_degree(b, lb);
-    int i, j;
-    uint64_t inv_lead, c;
+	int db = gf_poly_degree(b, lb);
+	int i, j;
+	uint64_t inv_lead, c;
 
-    if (db < 0)
-    {
-        return GF_ERR_DIVISION_BY_ZERO;
-    }
-    memcpy(r, a, la * sizeof(uint64_t));
-    memset(q, 0, la * sizeof(uint64_t));
-    inv_lead = gf_inv_mod(b[db], p);
-    for (i = la - 1; i >= db; i--)
-    {
-        c = (r[i] * inv_lead) % p;
-        if (c == 0)
-        {
-            continue;
-        }
-        q[i - db] = c;
-        for (j = 0; j <= db; j++)
-        {
-            r[i - db + j] = (r[i - db + j] + p - (c * b[j]) % p) % p;
-        }
-    }
-    return GF_OK;
+	if (db < 0) {
+		return GF_ERR_DIVISION_BY_ZERO;
+	}
+
+	memcpy(r, a, la * sizeof(uint64_t));
+	memset(q, 0, la * sizeof(uint64_t));
+	inv_lead = gf_inv_mod(b[db], p);
+	
+	for (i = la - 1; i >= db; i--) {
+		c = (r[i] * inv_lead) % p;
+		
+		if (c == 0) {
+			continue;
+		}
+
+		q[i - db] = c;
+		
+		for (j = 0; j <= db; j++) {
+			r[i - db + j] = (r[i - db + j] + p - (c * b[j]) % p) % p;
+		}
+	}
+
+	return GF_OK;
 }
