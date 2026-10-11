@@ -76,8 +76,10 @@ GF_EXPORT int gf_field_elements(uint64_t p, int n, const uint64_t* f, double* el
 GF_EXPORT void gf_elem_add(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r);
 GF_EXPORT void gf_elem_sub(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r);
 GF_EXPORT void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r);
+
 /* GF_ERR_DIVISION_BY_ZERO if b is zero. */
 GF_EXPORT int gf_elem_div(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r);
+
 /* a^e. GF_ERR_DIVISION_BY_ZERO for 0^0, which is undefined here. */
 GF_EXPORT int gf_elem_pow(uint64_t p, int n, const uint64_t* f, const uint64_t* a, uint64_t e, uint64_t* r);
 GF_EXPORT int gf_elem_is_zero(int n, const uint64_t* a);
