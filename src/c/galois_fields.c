@@ -10,6 +10,16 @@
 #include <string.h>
 #include "galois_fields.h"
 
+/* Elements of GF(p^n) encoded as integers c0 + c1 p + ... (base p digits). */
+typedef struct
+{
+    uint64_t p;
+    int n;
+    uint64_t q;
+    uint32_t* alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
+    uint32_t* log;  /* log[code] = i, for code != 0 */
+} code_field;
+
 /* ---- Integers ---------------------------------------------------------- */
 
 int gf_is_prime(uint64_t n)
@@ -374,7 +384,7 @@ int gf_is_primitive_polynomial(const uint64_t *f, int n, uint64_t p)
 	return is_primitive_with_factors(f, n, p, q, factors, nfactors);
 }
 
-int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t* f)
+int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t *f)
 {
 	uint64_t factors[64];
 	uint64_t q, k, v;
@@ -389,253 +399,250 @@ int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t* f)
 	}
 
 	q = gf_field_order(p, n, GF_MAX_ORDER);
-	if (q == 0)
-	{
-			return GF_ERR_NOT_FOUND;
+
+	if (q == 0) {
+		return GF_ERR_NOT_FOUND;
 	}
+
 	nfactors = prime_factors(q - 1, factors, 64);
 	f[n] = 1;
-	for (k = 1; k < q; k++)
-	{
-			v = k;
-			for (i = 0; i < n; i++)
-			{
-					f[i] = v % p;
-					v /= p;
-			}
-			if (f[0] == 0)
-			{
-					continue;
-			}
-			if (is_primitive_with_factors(f, n, p, q, factors, nfactors))
-			{
-					return GF_OK;
-			}
-	}
 	
+	for (k = 1; k < q; k++) {
+		v = k;
+
+		for (i = 0; i < n; i++) {
+			f[i] = v % p;
+			v /= p;
+		}
+
+		if (f[0] == 0) {
+			continue;
+		}
+
+		if (is_primitive_with_factors(f, n, p, q, factors, nfactors)) {
+			return GF_OK;
+		}
+	}
+
 	return GF_ERR_NOT_FOUND;
 }
 
-int gf_field_elements(uint64_t p, int n, const uint64_t* f, double* elements)
+int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 {
-    uint64_t q = gf_field_order(p, n, GF_MAX_ORDER);
-    uint64_t cur[GF_MAX_DEGREE + 1];
-    uint64_t row;
-    int c;
+	uint64_t q = gf_field_order(p, n, GF_MAX_ORDER);
+	uint64_t cur[GF_MAX_DEGREE + 1];
+	uint64_t row;
+	int c;
 
-    if (q == 0)
-    {
-        return GF_ERR_NOT_FOUND;
-    }
+	if (q == 0) {
+		return GF_ERR_NOT_FOUND;
+	}
 
-    if (n == 1)
-    {
-        for (row = 0; row < q; row++)
-        {
-            elements[row] = (double)row;
-        }
-        return GF_OK;
-    }
+	if (n == 1)
+	{
+		for (row = 0; row < q; row++) {
+			elements[row] = (double) row;
+		}
 
-    for (c = 0; c < n; c++)
-    {
-        elements[c * q] = 0;
-    }
-    memset(cur, 0, sizeof(cur));
-    cur[0] = 1;
-    for (row = 1; row < q; row++)
-    {
-        for (c = 0; c < n; c++)
-        {
-            elements[c * q + row] = (double)cur[c];
-        }
-        /* cur = cur * x mod f */
-        for (c = n; c > 0; c--)
-        {
-            cur[c] = cur[c - 1];
-        }
-        cur[0] = 0;
-        reduce(p, n, f, cur, n + 1, cur);
-        cur[n] = 0;
-    }
-    return GF_OK;
+		return GF_OK;
+	}
+
+	for (c = 0; c < n; c++){
+		elements[c * q] = 0;
+	}
+
+	memset(cur, 0, sizeof(cur));
+	cur[0] = 1;
+
+	for (row = 1; row < q; row++)
+	{
+		for (c = 0; c < n; c++){
+			elements[c * q + row] = (double)cur[c];
+		}
+		
+		/* cur = cur * x mod f */
+		for (c = n; c > 0; c--){
+			cur[c] = cur[c - 1];
+		}
+
+		cur[0] = 0;
+		reduce(p, n, f, cur, n + 1, cur);
+		cur[n] = 0;
+	}
+
+	return GF_OK;
 }
 
 /* ---- Minimal polynomials --------------------------------------------- */
 
-/* Elements of GF(p^n) encoded as integers c0 + c1 p + ... (base p digits). */
-typedef struct
+static uint64_t code_add(const code_field *F, uint64_t a, uint64_t b)
 {
-    uint64_t p;
-    int n;
-    uint64_t q;
-    uint32_t* alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
-    uint32_t* log;  /* log[code] = i, for code != 0 */
-} code_field;
+	uint64_t r = 0, w = 1;
+	int i;
 
-static uint64_t code_add(const code_field* F, uint64_t a, uint64_t b)
-{
-    uint64_t r = 0, w = 1;
-    int i;
-    for (i = 0; i < F->n; i++)
-    {
-        r += ((a % F->p + b % F->p) % F->p) * w;
-        a /= F->p;
-        b /= F->p;
-        w *= F->p;
-    }
-    return r;
+	for (i = 0; i < F->n; i++) {
+		r += ((a % F->p + b % F->p) % F->p) * w;
+		a /= F->p;
+		b /= F->p;
+		w *= F->p;
+	}
+
+	return r;
 }
 
-static uint64_t code_neg(const code_field* F, uint64_t a)
+static uint64_t code_neg(const code_field *F, uint64_t a)
 {
-    uint64_t r = 0, w = 1;
-    int i;
-    for (i = 0; i < F->n; i++)
-    {
-        r += ((F->p - a % F->p) % F->p) * w;
-        a /= F->p;
-        w *= F->p;
-    }
-    return r;
+	uint64_t r = 0, w = 1;
+	int i;
+
+	for (i = 0; i < F->n; i++) {
+		r += ((F->p - a % F->p) % F->p) * w;
+		a /= F->p;
+		w *= F->p;
+	}
+
+	return r;
 }
 
 static uint64_t code_mul(const code_field* F, uint64_t a, uint64_t b)
 {
-    if (a == 0 || b == 0)
-    {
-        return 0;
-    }
-    return F->alog[(F->log[a] + F->log[b]) % (F->q - 1)];
+	if (a == 0 || b == 0) {
+		return 0;
+	}
+
+	return F->alog[(F->log[a] + F->log[b]) % (F->q - 1)];
 }
 
-int gf_minimal_polynomial(uint64_t p, int n, const uint64_t* f, int64_t e, uint64_t* out)
+int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint64_t *out)
 {
-    code_field F;
-    uint64_t cur[GF_MAX_DEGREE + 1];
-    uint64_t* m = NULL;
-    uint64_t k0, k, code, w;
-    int d = 0, i, c;
+	code_field F;
+	uint64_t cur[GF_MAX_DEGREE + 1];
+	uint64_t* m = NULL;
+	uint64_t k0, k, code, w;
+	int d = 0, i, c;
 
-    memset(out, 0, (n + 1) * sizeof(uint64_t));
+	memset(out, 0, (n + 1) * sizeof(uint64_t));
 
-    if (n == 1)
-    {
-        out[0] = (p - gf_mod(e, p)) % p;
-        out[1] = 1;
-        return GF_OK;
-    }
-    if (e < 0)
-    {
-        /* Minimal polynomial of 0 is x. */
-        out[1] = 1;
-        return GF_OK;
-    }
+	if (n == 1) {
+		out[0] = (p - gf_mod(e, p)) % p;
+		out[1] = 1;
+		return GF_OK;
+	}
 
-    F.p = p;
-    F.n = n;
-    F.q = gf_field_order(p, n, GF_MAX_ORDER);
-    if (F.q == 0)
-    {
-        return GF_ERR_NOT_FOUND;
-    }
-    F.alog = (uint32_t*)malloc((F.q - 1) * sizeof(uint32_t));
-    F.log = (uint32_t*)calloc(F.q, sizeof(uint32_t));
-    m = (uint64_t*)calloc(n + 1, sizeof(uint64_t));
-    if (F.alog == NULL || F.log == NULL || m == NULL)
-    {
-        free(F.alog);
-        free(F.log);
-        free(m);
-        return GF_ERR_MEMORY;
-    }
+	if (e < 0) {
+		/* Minimal polynomial of 0 is x. */
+		out[1] = 1;
+		return GF_OK;
+	}
 
-    /* Power table alpha^i, alpha a root of f. */
-    memset(cur, 0, sizeof(cur));
-    cur[0] = 1;
-    for (k = 0; k < F.q - 1; k++)
-    {
-        code = 0;
-        w = 1;
-        for (c = 0; c < n; c++)
-        {
-            code += cur[c] * w;
-            w *= p;
-        }
-        F.alog[k] = (uint32_t)code;
-        F.log[code] = (uint32_t)k;
-        for (c = n; c > 0; c--)
-        {
-            cur[c] = cur[c - 1];
-        }
-        cur[0] = 0;
-        reduce(p, n, f, cur, n + 1, cur);
-        cur[n] = 0;
-    }
+	F.p = p;
+	F.n = n;
+	F.q = gf_field_order(p, n, GF_MAX_ORDER);
 
-    /* m(x) = product of (x - alpha^(e p^j)) over the distinct conjugates. */
-    m[0] = 1;
-    k0 = (uint64_t)e % (F.q - 1);
-    k = k0;
-    do
-    {
-        uint64_t root = F.alog[k];
-        uint64_t minus_root = code_neg(&F, root);
-        /* m = m * (x - root) */
-        m[d + 1] = m[d];
-        for (i = d; i > 0; i--)
-        {
-            m[i] = code_add(&F, m[i - 1], code_mul(&F, minus_root, m[i]));
-        }
-        m[0] = code_mul(&F, minus_root, m[0]);
-        d++;
-        k = (k * p) % (F.q - 1);
-    }
-    while (k != k0 && d < n);
+	if (F.q == 0) {
+		return GF_ERR_NOT_FOUND;
+	}
 
-    /* The coefficients lie in the prime subfield, so their codes are < p. */
-    for (i = 0; i <= d; i++)
-    {
-        out[i] = m[i] % p;
-    }
+	F.alog = (uint32_t*) malloc((F.q - 1) * sizeof(uint32_t));
+	F.log = (uint32_t*) calloc(F.q, sizeof(uint32_t));
+	m = (uint64_t*) calloc(n + 1, sizeof(uint64_t));
 
-    free(F.alog);
-    free(F.log);
-    free(m);
-    return GF_OK;
+	if (F.alog == NULL || F.log == NULL || m == NULL) {
+		free(F.alog);
+		free(F.log);
+		free(m);
+		return GF_ERR_MEMORY;
+	}
+
+	/* Power table alpha^i, alpha a root of f. */
+	memset(cur, 0, sizeof(cur));
+	cur[0] = 1;
+
+	for (k = 0; k < F.q - 1; k++) {
+		code = 0;
+		w = 1;
+
+		for (c = 0; c < n; c++) {
+			code += cur[c] * w;
+			w *= p;
+		}
+
+		F.alog[k] = (uint32_t)code;
+		F.log[code] = (uint32_t)k;
+
+		for (c = n; c > 0; c--){
+			cur[c] = cur[c - 1];
+		}
+
+		cur[0] = 0;
+		reduce(p, n, f, cur, n + 1, cur);
+		cur[n] = 0;
+	}
+
+	/* m(x) = product of (x - alpha^(e p^j)) over the distinct conjugates. */
+	m[0] = 1;
+	k0 = (uint64_t)e % (F.q - 1);
+	k = k0;
+
+	do {
+		uint64_t root = F.alog[k];
+		uint64_t minus_root = code_neg(&F, root);
+
+		/* m = m * (x - root) */
+		m[d + 1] = m[d];
+
+		for (i = d; i > 0; i--) {
+			m[i] = code_add(&F, m[i - 1], code_mul(&F, minus_root, m[i]));
+		}
+
+		m[0] = code_mul(&F, minus_root, m[0]);
+		d++;
+		k = (k * p) % (F.q - 1);
+	} while (k != k0 && d < n);
+
+	/* The coefficients lie in the prime subfield, so their codes are < p. */
+	for (i = 0; i <= d; i++) {
+		out[i] = m[i] % p;
+	}
+
+	free(F.alog);
+	free(F.log);
+	free(m);
+
+	return GF_OK;
 }
 
 /* ---- Polynomials over GF(p) ------------------------------------------ */
 
-int gf_poly_degree(const uint64_t* a, int len)
+int gf_poly_degree(const uint64_t *a, int len)
 {
-    int i;
-    for (i = len - 1; i >= 0; i--)
-    {
-        if (a[i] != 0)
-        {
-            return i;
-        }
-    }
-    return -1;
+	int i;
+
+	for (i = len - 1; i >= 0; i--){
+		if (a[i] != 0) {
+			return i;
+		}
+	}
+
+	return -1;
 }
 
-void gf_poly_add(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r)
+void gf_poly_add(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
-    int i, len = la > lb ? la : lb;
-    for (i = 0; i < len; i++)
-    {
-        r[i] = ((i < la ? a[i] : 0) + (i < lb ? b[i] : 0)) % p;
-    }
+	int i, len = la > lb ? la : lb;
+	
+	for (i = 0; i < len; i++) {
+		r[i] = ((i < la ? a[i] : 0) + (i < lb ? b[i] : 0)) % p;
+	}
 }
 
-void gf_poly_sub(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r)
+void gf_poly_sub(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
-    int i, len = la > lb ? la : lb;
-    for (i = 0; i < len; i++)
-    {
-        r[i] = ((i < la ? a[i] : 0) + p - (i < lb ? b[i] : 0)) % p;
-    }
+	int i, len = la > lb ? la : lb;
+	
+	for (i = 0; i < len; i++) {
+		r[i] = ((i < la ? a[i] : 0) + p - (i < lb ? b[i] : 0)) % p;
+	}
 }
 
 void gf_poly_mul(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r)
