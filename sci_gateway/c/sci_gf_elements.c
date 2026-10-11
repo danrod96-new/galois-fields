@@ -145,8 +145,9 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 	} else {
 		out[0] = gw_create_elements(env, &field, r, count, rows, cols);
 	}
+	
 	free(a);
 	free(r);
-	
+
 	return status != 0;
 }
