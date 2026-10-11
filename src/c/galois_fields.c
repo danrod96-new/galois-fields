@@ -216,7 +216,7 @@ void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t *a, const 
 	reduce(p, n, f, t, 2 * n - 1, r);
 }
 
-int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t* a, uint64_t e, uint64_t *r)
+int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t *a, uint64_t e, uint64_t *r)
 {
 	uint64_t base[GF_MAX_DEGREE];
 	uint64_t q = gf_field_order(p, n, UINT64_MAX / 2);
@@ -256,157 +256,164 @@ int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t* a, uint64_
 	return GF_OK;
 }
 
-int gf_elem_div(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r)
+int gf_elem_div(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
-    uint64_t inverse[GF_MAX_DEGREE];
-    uint64_t q = gf_field_order(p, n, UINT64_MAX / 2);
-    if (gf_elem_is_zero(n, b))
-    {
-        return GF_ERR_DIVISION_BY_ZERO;
-    }
-    /* b^(q - 2) = b^-1 in GF(q). */
-    gf_elem_pow(p, n, f, b, q - 2, inverse);
-    gf_elem_mul(p, n, f, a, inverse, r);
-    return GF_OK;
+	uint64_t inverse[GF_MAX_DEGREE];
+	uint64_t q = gf_field_order(p, n, UINT64_MAX / 2);
+
+	if (gf_elem_is_zero(n, b)) {
+		return GF_ERR_DIVISION_BY_ZERO;
+	}
+
+	/* b^(q - 2) = b^-1 in GF(q). */
+	gf_elem_pow(p, n, f, b, q - 2, inverse);
+	gf_elem_mul(p, n, f, a, inverse, r);
+	
+	return GF_OK;
 }
 
 /* ---- Primitive polynomials ------------------------------------------- */
 
-static int is_one(int n, const uint64_t* a)
+static int is_one(int n, const uint64_t *a)
 {
-    int i;
-    if (a[0] != 1)
-    {
-        return 0;
-    }
-    for (i = 1; i < n; i++)
-    {
-        if (a[i] != 0)
-        {
-            return 0;
-        }
-    }
-    return 1;
+	int i;
+
+	if (a[0] != 1) {
+		return 0;
+	}
+
+	for (i = 1; i < n; i++) {
+		if (a[i] != 0) {
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
 /* f is primitive iff x has multiplicative order exactly p^n - 1 modulo f
  * (which also implies that f is irreducible). */
-static int is_primitive_with_factors(const uint64_t* f, int n, uint64_t p, uint64_t q,
-                                     const uint64_t* factors, int nfactors)
+static int is_primitive_with_factors(const uint64_t *f, int n, uint64_t p, uint64_t q,
+                                     const uint64_t *factors, int nfactors)
 {
-    uint64_t x_poly[GF_MAX_DEGREE + 1];
-    uint64_t x[GF_MAX_DEGREE];
-    uint64_t r[GF_MAX_DEGREE];
-    int i;
+	uint64_t x_poly[GF_MAX_DEGREE + 1];
+	uint64_t x[GF_MAX_DEGREE];
+	uint64_t r[GF_MAX_DEGREE];
+	int i;
 
-    if (f[n] % p == 0 || f[0] % p == 0)
-    {
-        return 0;
-    }
+	if (f[n] % p == 0 || f[0] % p == 0) {
+		return 0;
+	}
 
-    memset(x_poly, 0, sizeof(x_poly));
-    x_poly[1] = 1;
-    reduce(p, n, f, x_poly, 2, x);
+	memset(x_poly, 0, sizeof(x_poly));
+	x_poly[1] = 1;
+	reduce(p, n, f, x_poly, 2, x);
 
-    /* x^(q-1) must be 1. gf_elem_pow reduces exponents modulo q - 1, so the
-     * powers are computed explicitly here. */
-    {
-        uint64_t e = q - 1;
-        uint64_t base[GF_MAX_DEGREE];
-        memcpy(base, x, n * sizeof(uint64_t));
-        memset(r, 0, n * sizeof(uint64_t));
-        r[0] = 1;
-        while (e > 0)
-        {
-            if (e & 1)
-            {
-                gf_elem_mul(p, n, f, r, base, r);
-            }
-            gf_elem_mul(p, n, f, base, base, base);
-            e >>= 1;
-        }
-        if (!is_one(n, r))
-        {
-            return 0;
-        }
-    }
+	/* x^(q-1) must be 1. gf_elem_pow reduces exponents modulo q - 1, so the
+		* powers are computed explicitly here. */
+	{
+		uint64_t e = q - 1;
+		uint64_t base[GF_MAX_DEGREE];
 
-    for (i = 0; i < nfactors; i++)
-    {
-        uint64_t e = (q - 1) / factors[i];
-        uint64_t base[GF_MAX_DEGREE];
-        memcpy(base, x, n * sizeof(uint64_t));
-        memset(r, 0, n * sizeof(uint64_t));
-        r[0] = 1;
-        while (e > 0)
-        {
-            if (e & 1)
-            {
-                gf_elem_mul(p, n, f, r, base, r);
-            }
-            gf_elem_mul(p, n, f, base, base, base);
-            e >>= 1;
-        }
-        if (is_one(n, r))
-        {
-            return 0;
-        }
-    }
-    return 1;
+		memcpy(base, x, n * sizeof(uint64_t));
+		memset(r, 0, n * sizeof(uint64_t));
+		r[0] = 1;
+		
+		while (e > 0) {
+			if (e & 1) {
+				gf_elem_mul(p, n, f, r, base, r);
+			}
+			
+			gf_elem_mul(p, n, f, base, base, base);
+			e >>= 1;
+		}
+
+		if (!is_one(n, r)) {
+			return 0;
+		}
+	}
+
+	for (i = 0; i < nfactors; i++)
+	{
+		uint64_t e = (q - 1) / factors[i];
+		uint64_t base[GF_MAX_DEGREE];
+
+		memcpy(base, x, n * sizeof(uint64_t));
+		memset(r, 0, n * sizeof(uint64_t));
+		r[0] = 1;
+
+		while (e > 0) {
+			if (e & 1) {
+				gf_elem_mul(p, n, f, r, base, r);
+			}
+
+			gf_elem_mul(p, n, f, base, base, base);
+			e >>= 1;
+		}
+
+		if (is_one(n, r)) {
+			return 0;
+		}
+	}
+
+	return 1;
 }
 
-int gf_is_primitive_polynomial(const uint64_t* f, int n, uint64_t p)
+int gf_is_primitive_polynomial(const uint64_t *f, int n, uint64_t p)
 {
-    uint64_t factors[64];
-    uint64_t q = gf_field_order(p, n, GF_MAX_ORDER);
-    int nfactors;
-    if (q == 0 || n < 1 || n > GF_MAX_DEGREE)
-    {
-        return 0;
-    }
-    nfactors = prime_factors(q - 1, factors, 64);
-    return is_primitive_with_factors(f, n, p, q, factors, nfactors);
+	uint64_t factors[64];
+	uint64_t q = gf_field_order(p, n, GF_MAX_ORDER);
+	int nfactors;
+
+	if (q == 0 || n < 1 || n > GF_MAX_DEGREE) {
+		return 0;
+	}
+
+	nfactors = prime_factors(q - 1, factors, 64);
+
+	return is_primitive_with_factors(f, n, p, q, factors, nfactors);
 }
 
 int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t* f)
 {
-    uint64_t factors[64];
-    uint64_t q, k, v;
-    int nfactors, i;
+	uint64_t factors[64];
+	uint64_t q, k, v;
+	int nfactors, i;
 
-    if (n == 1)
-    {
-        uint64_t g = gf_primitive_root(p);
-        f[0] = (p - g) % p;
-        f[1] = 1;
-        return GF_OK;
-    }
+	if (n == 1) {
+		uint64_t g = gf_primitive_root(p);
+		f[0] = (p - g) % p;
+		f[1] = 1;
 
-    q = gf_field_order(p, n, GF_MAX_ORDER);
-    if (q == 0)
-    {
-        return GF_ERR_NOT_FOUND;
-    }
-    nfactors = prime_factors(q - 1, factors, 64);
-    f[n] = 1;
-    for (k = 1; k < q; k++)
-    {
-        v = k;
-        for (i = 0; i < n; i++)
-        {
-            f[i] = v % p;
-            v /= p;
-        }
-        if (f[0] == 0)
-        {
-            continue;
-        }
-        if (is_primitive_with_factors(f, n, p, q, factors, nfactors))
-        {
-            return GF_OK;
-        }
-    }
-    return GF_ERR_NOT_FOUND;
+		return GF_OK;
+	}
+
+	q = gf_field_order(p, n, GF_MAX_ORDER);
+	if (q == 0)
+	{
+			return GF_ERR_NOT_FOUND;
+	}
+	nfactors = prime_factors(q - 1, factors, 64);
+	f[n] = 1;
+	for (k = 1; k < q; k++)
+	{
+			v = k;
+			for (i = 0; i < n; i++)
+			{
+					f[i] = v % p;
+					v /= p;
+			}
+			if (f[0] == 0)
+			{
+					continue;
+			}
+			if (is_primitive_with_factors(f, n, p, q, factors, nfactors))
+			{
+					return GF_OK;
+			}
+	}
+	
+	return GF_ERR_NOT_FOUND;
 }
 
 int gf_field_elements(uint64_t p, int n, const uint64_t* f, double* elements)
