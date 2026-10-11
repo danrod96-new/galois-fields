@@ -94,7 +94,7 @@ uint64_t gf_field_order(uint64_t p, int n, uint64_t limit)
 }
 
 /* Distinct prime factors of m, at most max of them. */
-static int prime_factors(uint64_t m, uint64_t* factors, int max)
+static int prime_factors(uint64_t m, uint64_t *factors, int max)
 {
 	int count = 0;
 	uint64_t d;
@@ -150,7 +150,7 @@ uint64_t gf_primitive_root(uint64_t p)
 
 /* Reduces t (len coefficients, modified in place) modulo f (degree n) and
  * writes the n remaining coefficients to r. */
-static void reduce(uint64_t p, int n, const uint64_t* f, uint64_t* t, int len, uint64_t* r)
+static void reduce(uint64_t p, int n, const uint64_t *f, uint64_t *t, int len, uint64_t *r)
 {
 	uint64_t inv_lead = gf_inv_mod(f[n], p);
 	uint64_t c;
@@ -206,7 +206,7 @@ void gf_elem_sub(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64
 	}
 }
 
-void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t *a, const uint64_t *b, uint64_t *r)
+void gf_elem_mul(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
 	uint64_t t[2 * GF_MAX_DEGREE];
 	int i, j;
