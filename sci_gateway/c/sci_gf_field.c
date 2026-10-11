@@ -12,7 +12,7 @@
 #include "gw_helpers.h"
 
 /* field = gf_create_field(p, n [, primitive_polynomial]) */
-int sci_gf_create_field(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
+int sci_gf_create_field(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 {
 	static const char fname[] = "gf_create_field";
 	gw_field field;
@@ -21,10 +21,7 @@ int sci_gf_create_field(scilabEnv env, int nin, scilabVar* in, int nopt, scilabO
 	scilabVar list, elements;
 	double* table = NULL;
 
-	if (gw_check_nin(fname, nin, 2, 3)
-					|| gw_get_prime(env, in[0], fname, 1, &field.p)
-					|| gw_get_degree(env, in[1], fname, 2, &field.n)
-					|| gw_check_order(fname, field.p, field.n, &field.q)) {
+	if (gw_check_nin(fname, nin, 2, 3) || gw_get_prime(env, in[0], fname, 1, &field.p) || gw_get_degree(env, in[1], fname, 2, &field.n) || gw_check_order(fname, field.p, field.n, &field.q)) {
 		return 1;
 	}
 
@@ -66,7 +63,7 @@ int sci_gf_create_field(scilabEnv env, int nin, scilabVar* in, int nopt, scilabO
 	scilab_appendToList(env, list, scilab_createDouble(env, (double) field.n));
 	scilab_appendToList(env, list, gw_create_row(env, field.f, field.n + 1));
 	scilab_appendToList(env, list, elements);
-	
+
 	out[0] = list;
 	return 0;
 }

@@ -233,10 +233,10 @@ int sci_gf_is_prime(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* 
 	}
 
 	for (i = 0; i < rows * cols; i++) {
-		if (!(data[i] >= 0 && floor(data[i]) == data[i] && data[i] < 9007199254740992.0))
-		{
-				Scierror(999, _("%s: Wrong value for input argument #%d: Non-negative integers expected.\n"), fname, 1);
-				return 1;
+		if (!(data[i] >= 0 && floor(data[i]) == data[i] && data[i] < 9007199254740992.0)) {
+			Scierror(999, _("%s: Wrong value for input argument #%d: Non-negative integers expected.\n"), fname, 1);
+			
+      return 1;
 		}
 	}
 
@@ -264,13 +264,15 @@ int sci_gf_mod(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt *opt, 
 
 	if (m == 0){
 		Scierror(999, _("%s: Wrong value for input argument #%d: A positive integer expected.\n"), fname, 2);
-		return 1;
+		
+    return 1;
 	}
 
 	for (i = 0; i < rows * cols; i++) {
 		if (!(floor(data[i]) == data[i] && fabs(data[i]) < 9007199254740992.0)){
 			Scierror(999, _("%s: Wrong value for input argument #%d: Integers expected.\n"), fname, 1);
-			return 1;
+			
+      return 1;
 		}
 	}
 	out[0] = scilab_createDoubleMatrix2d(env, rows, cols, 0);
