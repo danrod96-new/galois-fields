@@ -96,8 +96,7 @@ int sci_gf_default_primitive_polynomial(scilabEnv env, int nin, scilabVar *in, i
 	}
 
 	if (gf_default_primitive_polynomial(p, n, f) != GF_OK) {
-		Scierror(999, _("%s: No primitive polynomial of degree %d found over GF(%llu).\n"), fname, n, (unsigned long long)p);
-		
+		Scierror(999, _("%s: No primitive polynomial of degree %d found over GF(%llu).\n"), fname, n, (unsigned long long) p);
 		return 1;
 	}
 
@@ -163,7 +162,6 @@ int sci_gf_minimal_polynomial(scilabEnv env, int nin, scilabVar *in, int nopt, s
 			if (nin != 3) {
 				Scierror(77, _("%s: Wrong number of input argument(s): %d expected.\n"), fname, 3);
 			}
-
 			return 1;
 		}
 
