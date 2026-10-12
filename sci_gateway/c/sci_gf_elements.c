@@ -29,7 +29,6 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 
 	if (gw_get_elements(env, in[2], fname, 3, &field, &b, &cb, &rb, &colb)) {
 		free(a);
-		
 		return 1;
 	}
 
@@ -37,7 +36,6 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 		free(a);
 		free(b);
 		Scierror(999, _("%s: Wrong size for input arguments #%d and #%d: Same number of elements expected, or a single element.\n"), fname, 2, 3);
-		
 		return 1;
 	}
 
@@ -51,7 +49,6 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 		free(a);
 		free(b);
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
-		
 		return 1;
 	}
 
@@ -88,7 +85,6 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 	free(a);
 	free(b);
 	free(r);
-	
 	return status != 0;
 }
 
@@ -133,7 +129,6 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 	if (r == NULL) {
 		free(a);
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
-		
 		return 1;
 	}
 	for (i = 0; i < count && status == 0; i++){
@@ -148,6 +143,5 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 	
 	free(a);
 	free(r);
-
 	return status != 0;
 }
