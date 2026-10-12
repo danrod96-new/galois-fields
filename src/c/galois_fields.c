@@ -123,7 +123,7 @@ uint64_t gf_primitive_root(uint64_t p)
 	uint64_t g;
 
 	if (p == 2) {
-			return 1;
+		return 1;
 	}
 
 	count = prime_factors(p - 1, factors, 64);
@@ -132,21 +132,18 @@ uint64_t gf_primitive_root(uint64_t p)
 		ok = 1;
 		
 		for (i = 0; i < count && ok; i++) {
-			if (gf_pow_mod(g, (p - 1) / factors[i], p) == 1)
-			{
-					ok = 0;
+			if (gf_pow_mod(g, (p - 1) / factors[i], p) == 1) {
+				ok = 0;
 			}
 		}
 
 		if (ok) {
-				return g;
+			return g;
 		}
 	}
 
 	return 0;
 }
-
-/* ---- Element arithmetic ---------------------------------------------- */
 
 /* Reduces t (len coefficients, modified in place) modulo f (degree n) and
  * writes the n remaining coefficients to r. */
@@ -215,7 +212,7 @@ void gf_elem_mul(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const 
 
 	for (i = 0; i < n; i++) {
 		if (a[i] == 0) {
-				continue;
+			continue;
 		}
 
 		for (j = 0; j < n; j++) {
@@ -282,8 +279,6 @@ int gf_elem_div(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const u
 	return GF_OK;
 }
 
-/* ---- Primitive polynomials ------------------------------------------- */
-
 static int is_one(int n, const uint64_t *a)
 {
 	int i;
@@ -301,7 +296,7 @@ static int is_one(int n, const uint64_t *a)
 	return 1;
 }
 
-/* f is primitive iff x has multiplicative order exactly p^n - 1 modulo f
+/* f is primitive if x has multiplicative order exactly p^n - 1 modulo f
  * (which also implies that f is irreducible). */
 static int is_primitive_with_factors(const uint64_t *f, int n, uint64_t p, uint64_t q,
                                      const uint64_t *factors, int nfactors)
@@ -394,7 +389,6 @@ int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t *f)
 		uint64_t g = gf_primitive_root(p);
 		f[0] = (p - g) % p;
 		f[1] = 1;
-
 		return GF_OK;
 	}
 
@@ -612,8 +606,6 @@ int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint6
 	return GF_OK;
 }
 
-/* ---- Polynomials over GF(p) ------------------------------------------ */
-
 int gf_poly_degree(const uint64_t *a, int len)
 {
 	int i;
@@ -648,6 +640,7 @@ void gf_poly_sub(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int l
 void gf_poly_mul(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
 	int i, j;
+	
 	memset(r, 0, (la + lb - 1) * sizeof(uint64_t));
 
 	for (i = 0; i < la; i++) {
