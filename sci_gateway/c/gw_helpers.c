@@ -38,7 +38,6 @@ int gw_get_real(scilabEnv env, scilabVar var, const char* fname, int pos, double
 
 	scilab_getDim2d(env, var, rows, cols);
 	scilab_getDoubleArray(env, var, data);
-	
 	return 0;
 }
 
@@ -91,12 +90,10 @@ int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint6
 
 	if (!gf_is_prime(*p)) {
 		Scierror(999, _("%s: Wrong value for input argument #%d: A prime number expected.\n"), fname, pos);
-		
 		return 1;
 	}
 	if (*p > GF_MAX_ORDER) {
-		Scierror(999, _("%s: Wrong value for input argument #%d: The characteristic must not exceed %llu.\n"), fname, pos, (unsigned long long)GF_MAX_ORDER);
-		
+		Scierror(999, _("%s: Wrong value for input argument #%d: The characteristic must not exceed %llu.\n"), fname, pos, (unsigned long long) GF_MAX_ORDER);
 		return 1;
 	}
 
@@ -105,20 +102,20 @@ int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint6
 
 int gw_get_degree(scilabEnv env, scilabVar var, const char *fname, int pos, int *n)
 {
-    uint64_t v = 0;
+	uint64_t v = 0;
 
-    if (gw_get_scalar_uint(env, var, fname, pos, &v)) {
-      return 1;
-    }
+	if (gw_get_scalar_uint(env, var, fname, pos, &v)) {
+		return 1;
+	}
 
-    if (v < 1 || v > GF_MAX_DEGREE) {
-      Scierror(999, _("%s: Wrong value for input argument #%d: An integer in [%d, %d] expected.\n"), fname, pos, 1, GF_MAX_DEGREE);
-      return 1;
-    }
+	if (v < 1 || v > GF_MAX_DEGREE) {
+		Scierror(999, _("%s: Wrong value for input argument #%d: An integer in [%d, %d] expected.\n"), fname, pos, 1, GF_MAX_DEGREE);
+		return 1;
+	}
 
-    *n = (int) v;
-    
-		return 0;
+	*n = (int) v;
+	
+	return 0;
 }
 
 int gw_check_order(const char *fname, uint64_t p, int n, uint64_t *q)
@@ -162,7 +159,6 @@ int gw_get_coeffs(scilabEnv env, scilabVar var, const char* fname, int pos, uint
 
 	if (*coeffs == NULL) {
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
-
 		return 1;
 	}
 
@@ -171,7 +167,6 @@ int gw_get_coeffs(scilabEnv env, scilabVar var, const char* fname, int pos, uint
 			free(*coeffs);
 			*coeffs = NULL;
 			Scierror(999, _("%s: Wrong value for input argument #%d: Integer coefficients in [0, %llu] expected.\n"), fname, pos, (unsigned long long) (p - 1));
-			
 			return 1;
 		}
 	}
@@ -281,7 +276,6 @@ int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, co
 
     if (*rows * *cols == 0) {
       Scierror(999, _("%s: Wrong size for input argument #%d: A non-empty matrix expected.\n"), fname, pos);
-      
 			return 1;
     }
 
@@ -290,7 +284,6 @@ int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, co
     } else {
 			if (*cols != n) {
 				Scierror(999, _("%s: Wrong size for input argument #%d: %d columns expected (one element per row).\n"), fname, pos, n);
-				
 				return 1;
 			}
       
@@ -371,6 +364,6 @@ scilabVar gw_create_poly(scilabEnv env, const uint64_t *coeffs, int len)
 	if (degree < 0) {
 		return scilab_createDouble(env, 0);
 	}
-	
+
 	return gw_create_row(env, coeffs, degree + 1);
 }

@@ -298,8 +298,7 @@ static int is_one(int n, const uint64_t *a)
 
 /* f is primitive if x has multiplicative order exactly p^n - 1 modulo f
  * (which also implies that f is irreducible). */
-static int is_primitive_with_factors(const uint64_t *f, int n, uint64_t p, uint64_t q,
-                                     const uint64_t *factors, int nfactors)
+static int is_primitive_with_factors(const uint64_t *f, int n, uint64_t p, uint64_t q, const uint64_t *factors, int nfactors)
 {
 	uint64_t x_poly[GF_MAX_DEGREE + 1];
 	uint64_t x[GF_MAX_DEGREE];
@@ -451,7 +450,7 @@ int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 	for (row = 1; row < q; row++)
 	{
 		for (c = 0; c < n; c++){
-			elements[c * q + row] = (double)cur[c];
+			elements[c * q + row] = (double) cur[c];
 		}
 		
 		/* cur = cur * x mod f */
@@ -466,8 +465,6 @@ int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 
 	return GF_OK;
 }
-
-/* ---- Minimal polynomials --------------------------------------------- */
 
 static uint64_t code_add(const code_field *F, uint64_t a, uint64_t b)
 {
@@ -640,7 +637,7 @@ void gf_poly_sub(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int l
 void gf_poly_mul(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r)
 {
 	int i, j;
-	
+
 	memset(r, 0, (la + lb - 1) * sizeof(uint64_t));
 
 	for (i = 0; i < la; i++) {
