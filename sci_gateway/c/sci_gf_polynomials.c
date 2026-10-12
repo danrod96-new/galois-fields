@@ -25,7 +25,6 @@ static int read_two_polys(scilabEnv env, int nin, scilabVar *in, const char *fna
 
 	if (gw_get_coeffs(env, in[1], fname, 2, *p, b, lb)) {
 		free(*a);
-
 		return 1;
 	}
 
@@ -64,6 +63,7 @@ static int poly_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, const 
 	}
 
 	out[0] = gw_create_poly(env, r, lr);
+
 	free(a);
 	free(b);
 	free(r);
@@ -98,12 +98,11 @@ int sci_gf_poly_divide(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOp
 
 	if (nout > 2) {
 		Scierror(78, _("%s: Wrong number of output argument(s): %d to %d expected.\n"), fname, 1, 2);
-		
 		return 1;
 	}
 
 	if (read_two_polys(env, nin, in, fname, &p, &a, &la, &b, &lb)) {
-			return 1;
+		return 1;
 	}
 
 	q = (uint64_t*)malloc(la * sizeof(uint64_t));
@@ -115,7 +114,6 @@ int sci_gf_poly_divide(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOp
 		free(q);
 		free(r);
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
-		
 		return 1;
 	}
 
@@ -125,7 +123,6 @@ int sci_gf_poly_divide(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOp
 		free(q);
 		free(r);
 		Scierror(999, _("%s: Division by the zero polynomial.\n"), fname);
-
 		return 1;
 	}
 
@@ -165,7 +162,6 @@ int sci_gf_poly_power(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt
 		}
 
 		out[0] = scilab_createDouble(env, 0);
-
 		return 0;
 	}
 
@@ -186,15 +182,13 @@ int sci_gf_poly_power(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt
 		free(base);
 		free(tmp);
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
-
 		return 1;
 	}
 
 	result[0] = 1;
 	memcpy(base, a, lbase * sizeof(uint64_t));
 
-	while (e > 0)
-	{
+	while (e > 0) {
 		if (e & 1) {
 			gf_poly_mul(p, result, lr, base, lbase, tmp);
 			lr = lr + lbase - 1;
@@ -235,7 +229,6 @@ int sci_gf_is_prime(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* 
 	for (i = 0; i < rows * cols; i++) {
 		if (!(data[i] >= 0 && floor(data[i]) == data[i] && data[i] < 9007199254740992.0)) {
 			Scierror(999, _("%s: Wrong value for input argument #%d: Non-negative integers expected.\n"), fname, 1);
-			
       return 1;
 		}
 	}
@@ -264,14 +257,12 @@ int sci_gf_mod(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt *opt, 
 
 	if (m == 0){
 		Scierror(999, _("%s: Wrong value for input argument #%d: A positive integer expected.\n"), fname, 2);
-		
     return 1;
 	}
 
 	for (i = 0; i < rows * cols; i++) {
 		if (!(floor(data[i]) == data[i] && fabs(data[i]) < 9007199254740992.0)){
 			Scierror(999, _("%s: Wrong value for input argument #%d: Integers expected.\n"), fname, 1);
-			
       return 1;
 		}
 	}
