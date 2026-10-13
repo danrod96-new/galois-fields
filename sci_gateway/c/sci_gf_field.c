@@ -65,6 +65,7 @@ int sci_gf_create_field(scilabEnv env, int nin, scilabVar *in, int nopt, scilabO
 	scilab_appendToList(env, list, elements);
 
 	out[0] = list;
+
 	return 0;
 }
 
@@ -162,6 +163,7 @@ int sci_gf_minimal_polynomial(scilabEnv env, int nin, scilabVar *in, int nopt, s
 			if (nin != 3) {
 				Scierror(77, _("%s: Wrong number of input argument(s): %d expected.\n"), fname, 3);
 			}
+			
 			return 1;
 		}
 
