@@ -1,3 +1,16 @@
+galois_fields 2.1.0 (unreleased)
+    * Faster element arithmetic (C core and gateways):
+      - GF(2^n) multiplication, division, powers and element tables work on
+        bit-packed words; inverses use the extended Euclidean algorithm.
+      - Prime fields GF(p) multiply directly and invert with the extended
+        Euclidean algorithm instead of Fermat exponentiation.
+      - Other extension fields use log/antilog tables, cached for the last
+        field used by gf_multiply, gf_divide and gf_power.
+      - Reduction no longer recomputes the inverse of the leading coefficient
+        for monic polynomials.
+      - gf_minimal_polynomial no longer builds the whole power table.
+ -- Daniel E Rodriguez (UIS)
+
 galois_fields 2.0.0 (2026-10-10)
     * Ported to Scilab 6.1+ (tested with 2024.0.0): Scilab 6 C gateway API
       ("csci6"), current toolbox skeleton builder/loader/cleaner scripts.

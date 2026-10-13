@@ -9,6 +9,7 @@
  * Copyright (C) Daniel E Rodriguez - UIS.
  */
 #include <stdlib.h>
+#include <string.h>
 #include "api_scilab.h"
 #include "Scierror.h"
 #include "localization.h"
@@ -16,12 +17,42 @@
 
 enum gw_op { GW_ADD, GW_SUB, GW_MUL, GW_DIV };
 
+/* Log/antilog tables of the last field used, kept between calls. */
+static gf_tables *cached_tables = NULL;
+static gw_field cached_field;
+
+/* Tables for multiplication, division and powers in field, or NULL when the
+ * direct code is as fast: prime fields and GF(2^n) (bit-packed). Large
+ * tables are only built for enough elements to pay for them. */
+static const gf_tables *field_tables(const gw_field *field, int count)
+{
+	if (field->n == 1 || field->p == 2) {
+		return NULL;
+	}
+
+	if (cached_tables != NULL && cached_field.p == field->p && cached_field.n == field->n
+		&& memcmp(cached_field.f, field->f, (field->n + 1) * sizeof(uint64_t)) == 0) {
+		return cached_tables;
+	}
+
+	if (field->q > 65536 && (uint64_t) count * 256 < field->q) {
+		return NULL;
+	}
+
+	gf_tables_free(cached_tables);
+	cached_tables = gf_tables_create(field->p, field->n, field->f);
+	cached_field = *field;
+
+	return cached_tables;
+}
+
 static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, const char *fname, enum gw_op op)
 {
 	gw_field field;
 	uint64_t *a = NULL, *b = NULL, *r = NULL;
 	int ca = 0, cb = 0, ra = 0, rb = 0, cola = 0, colb = 0;
 	int count, rows, cols, i, n, status = 0;
+	const gf_tables *tables;
 
 	if (gw_check_nin(fname, nin, 3, 3) || gw_get_field(env, in[0], fname, 1, &field) || gw_get_elements(env, in[1], fname, 2, &field, &a, &ca, &ra, &cola)) {
 		return 1;
@@ -52,6 +83,8 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 		return 1;
 	}
 
+	tables = op == GW_MUL || op == GW_DIV ? field_tables(&field, count) : NULL;
+
 	for (i = 0; i < count && status == 0; i++) {
 		const uint64_t* x = a + (ca == 1 ? 0 : i) * n;
 		const uint64_t* y = b + (cb == 1 ? 0 : i) * n;
@@ -67,11 +100,19 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 				break;
 
 			case GW_MUL:
-				gf_elem_mul(field.p, n, field.f, x, y, z);
+				if (tables != NULL) {
+					gf_tab_mul(tables, x, y, z);
+				} else {
+					gf_elem_mul(field.p, n, field.f, x, y, z);
+				}
 				break;
 
 			case GW_DIV:
-				status = gf_elem_div(field.p, n, field.f, x, y, z);
+				if (tables != NULL) {
+					status = gf_tab_div(tables, x, y, z);
+				} else {
+					status = gf_elem_div(field.p, n, field.f, x, y, z);
+				}
 				break;
 		}
 	}
@@ -119,6 +160,7 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 	gw_field field;
 	uint64_t *a = NULL, *r = NULL, e = 0;
 	int count = 0, rows = 0, cols = 0, i, status = 0;
+	const gf_tables *tables;
 
 	if (gw_check_nin(fname, nin, 3, 3) || gw_get_field(env, in[0], fname, 1, &field) || gw_get_scalar_uint(env, in[2], fname, 3, &e) || gw_get_elements(env, in[1], fname, 2, &field, &a, &count, &rows, &cols)) {
 		return 1;
@@ -132,8 +174,14 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 		return 1;
 	}
 
+	tables = field_tables(&field, count);
+
 	for (i = 0; i < count && status == 0; i++){
-		status = gf_elem_pow(field.p, field.n, field.f, a + i * field.n, e, r + i * field.n);
+		if (tables != NULL) {
+			status = gf_tab_pow(tables, a + i * field.n, e, r + i * field.n);
+		} else {
+			status = gf_elem_pow(field.p, field.n, field.f, a + i * field.n, e, r + i * field.n);
+		}
 	}
 
 	if (status != 0) {

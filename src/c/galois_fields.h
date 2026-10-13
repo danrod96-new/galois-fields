@@ -71,7 +71,7 @@ GF_EXPORT int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t *f);
  * column-major (Scilab layout): row r, coefficient c at elements[c * q + r]. */
 GF_EXPORT int gf_field_elements(uint64_t p, int n, const uint64_t* f, double* elements);
 
-/* ---- Element arithmetic (a, b, r: n coefficients each) ---------------- */
+/* ---- Element arithmetic (a, b, r: n coefficients each, in 0 .. p - 1) -- */
 
 GF_EXPORT void gf_elem_add(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r);
 GF_EXPORT void gf_elem_sub(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r);
@@ -87,6 +87,19 @@ GF_EXPORT int gf_elem_is_zero(int n, const uint64_t *a);
 /* Minimal polynomial over GF(p) of alpha^e (n > 1, e = -1 meaning 0), or of
  * the integer e (n = 1). out receives n + 1 coefficients, zero padded. */
 GF_EXPORT int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint64_t *out);
+
+/* ---- Log/antilog tables -------------------------------------------------
+ * Faster multiplication, division and powers for repeated use of one field.
+ * Building them takes O(p^n) time and 8 p^n bytes. */
+
+typedef struct gf_tables gf_tables;
+
+/* NULL if memory runs out. */
+GF_EXPORT gf_tables *gf_tables_create(uint64_t p, int n, const uint64_t *f);
+GF_EXPORT void gf_tables_free(gf_tables *t);
+GF_EXPORT void gf_tab_mul(const gf_tables *t, const uint64_t *a, const uint64_t *b, uint64_t *r);
+GF_EXPORT int gf_tab_div(const gf_tables *t, const uint64_t *a, const uint64_t *b, uint64_t *r);
+GF_EXPORT int gf_tab_pow(const gf_tables *t, const uint64_t *a, uint64_t e, uint64_t *r);
 
 /* ---- Polynomials over GF(p) (any length, ascending order) ------------- */
 
