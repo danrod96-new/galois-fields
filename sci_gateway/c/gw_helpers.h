@@ -22,18 +22,18 @@ typedef struct
 
 /* Each helper reports its own error with Scierror and returns 1 on error. */
 int gw_check_nin(const char *fname, int nin, int min, int max);
-int gw_get_real(scilabEnv env, scilabVar var, const char* fname, int pos, double **data, int *rows, int *cols);
+int gw_get_real(scilabEnv env, scilabVar var, const char *fname, int pos, double **data, int *rows, int *cols);
 int gw_get_scalar_uint(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t *value);
 int gw_get_scalar_int(scilabEnv env, scilabVar var, const char *fname, int pos, int64_t *value);
-int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t* p);
-int gw_get_degree(scilabEnv env, scilabVar var, const char* fname, int pos, int *n);
+int gw_get_prime(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t *p);
+int gw_get_degree(scilabEnv env, scilabVar var, const char *fname, int pos, int *n);
 int gw_check_order(const char *fname, uint64_t p, int n, uint64_t *q);
 
 /* Row vector of coefficients in 0 .. p - 1 (malloc'ed, caller frees). */
-int gw_get_coeffs(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t p, uint64_t **coeffs, int* len);
+int gw_get_coeffs(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t p, uint64_t **coeffs, int *len);
 
 /* Field list created by gf_create_field. */
-int gw_get_field(scilabEnv env, scilabVar var, const char* fname, int pos, gw_field* field);
+int gw_get_field(scilabEnv env, scilabVar var, const char *fname, int pos, gw_field *field);
 
 /* Elements of the field: for n = 1 any matrix of integers (count = its size),
  * for n > 1 a matrix with n columns, one element per row (count = rows).
