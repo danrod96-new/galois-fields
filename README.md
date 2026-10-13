@@ -89,7 +89,7 @@ gf_minimal_polynomial(F, 3)          // [1 1 1 1 1] = 1 + x + x^2 + x^3 + x^4
 | `F = gf_create_field(p, n [, f])` | Field GF(p^n). `f` (n+1 coefficients) must be primitive; if it is omitted, the default primitive polynomial is used. |
 | `q = gf_order(F)` | Number of elements, p^n. |
 | `f = gf_default_primitive_polynomial(p, n)` | Default primitive polynomial. For n = 1 this is x − g, with g the smallest primitive root; for n > 1 it is the first monic primitive polynomial. |
-| `tf = gf_is_primitive_polynomial(f, p, n)` | `%t` if `f` (degree n) is primitive over GF(p). |
+| `tf = gf_is_primitive_polynomial(f, p, n)` | `T` if `f` (degree n) is primitive over GF(p). |
 | `m = gf_minimal_polynomial(p, n, e)` or `gf_minimal_polynomial(F, e)` | Minimal polynomial over GF(p). For n = 1, `e` is the element; for n > 1, it is the exponent k of α^k (−1 for zero). |
 | `c = gf_add(F, a, b)`, `gf_subtract`, `gf_multiply`, `gf_divide` | Element arithmetic. Dividing by zero is an error. |
 | `c = gf_power(F, a, e)` | a^e for an integer e ≥ 0 (0^0 is an error). |
