@@ -59,13 +59,13 @@ GF_EXPORT uint64_t gf_primitive_root(uint64_t p);
 
 /* 1 if f (n + 1 coefficients, f[n] != 0) is a primitive polynomial of
  * degree n over GF(p). p^n must not exceed GF_MAX_ORDER. */
-GF_EXPORT int gf_is_primitive_polynomial(const uint64_t* f, int n, uint64_t p);
+GF_EXPORT int gf_is_primitive_polynomial(const uint64_t *f, int n, uint64_t p);
 
 /* Writes the default primitive polynomial of degree n over GF(p) to f
  * (n + 1 coefficients): x - g for n = 1, g the smallest primitive root;
  * otherwise the first monic primitive polynomial when the coefficients
  * f[0] + f[1] p + ... + f[n-1] p^(n-1) are enumerated in increasing order. */
-GF_EXPORT int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t* f);
+GF_EXPORT int gf_default_primitive_polynomial(uint64_t p, int n, uint64_t *f);
 
 /* Fills the element table of GF(p^n). elements has p^n * n doubles, stored
  * column-major (Scilab layout): row r, coefficient c at elements[c * q + r]. */
@@ -73,35 +73,35 @@ GF_EXPORT int gf_field_elements(uint64_t p, int n, const uint64_t* f, double* el
 
 /* ---- Element arithmetic (a, b, r: n coefficients each) ---------------- */
 
-GF_EXPORT void gf_elem_add(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r);
-GF_EXPORT void gf_elem_sub(uint64_t p, int n, const uint64_t* a, const uint64_t* b, uint64_t* r);
-GF_EXPORT void gf_elem_mul(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r);
+GF_EXPORT void gf_elem_add(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r);
+GF_EXPORT void gf_elem_sub(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r);
+GF_EXPORT void gf_elem_mul(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const uint64_t *b, uint64_t *r);
 
 /* GF_ERR_DIVISION_BY_ZERO if b is zero. */
-GF_EXPORT int gf_elem_div(uint64_t p, int n, const uint64_t* f, const uint64_t* a, const uint64_t* b, uint64_t* r);
+GF_EXPORT int gf_elem_div(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const uint64_t *b, uint64_t *r);
 
 /* a^e. GF_ERR_DIVISION_BY_ZERO for 0^0, which is undefined here. */
-GF_EXPORT int gf_elem_pow(uint64_t p, int n, const uint64_t* f, const uint64_t* a, uint64_t e, uint64_t* r);
-GF_EXPORT int gf_elem_is_zero(int n, const uint64_t* a);
+GF_EXPORT int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t *a, uint64_t e, uint64_t *r);
+GF_EXPORT int gf_elem_is_zero(int n, const uint64_t *a);
 
 /* Minimal polynomial over GF(p) of alpha^e (n > 1, e = -1 meaning 0), or of
  * the integer e (n = 1). out receives n + 1 coefficients, zero padded. */
-GF_EXPORT int gf_minimal_polynomial(uint64_t p, int n, const uint64_t* f, int64_t e, uint64_t* out);
+GF_EXPORT int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint64_t *out);
 
 /* ---- Polynomials over GF(p) (any length, ascending order) ------------- */
 
 /* Degree of a (len coefficients), -1 for the zero polynomial. */
-GF_EXPORT int gf_poly_degree(const uint64_t* a, int len);
+GF_EXPORT int gf_poly_degree(const uint64_t *a, int len);
 
 /* r = a + b and r = a - b; r needs max(la, lb) coefficients. */
-GF_EXPORT void gf_poly_add(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r);
-GF_EXPORT void gf_poly_sub(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r);
+GF_EXPORT void gf_poly_add(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r);
+GF_EXPORT void gf_poly_sub(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r);
 
 /* r = a * b; r needs la + lb - 1 coefficients. */
-GF_EXPORT void gf_poly_mul(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* r);
+GF_EXPORT void gf_poly_mul(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *r);
 
 /* a = q * b + r with deg r < deg b. q needs la coefficients, r needs la.
  * GF_ERR_DIVISION_BY_ZERO if b is zero. */
-GF_EXPORT int gf_poly_divmod(uint64_t p, const uint64_t* a, int la, const uint64_t* b, int lb, uint64_t* q, uint64_t* r);
+GF_EXPORT int gf_poly_divmod(uint64_t p, const uint64_t *a, int la, const uint64_t *b, int lb, uint64_t *q, uint64_t *r);
 
 #endif /* GALOIS_FIELDS_H */
