@@ -13,14 +13,12 @@
 /* Elements of GF(p^n) encoded as integers c0 + c1 p + ... (base p digits). */
 typedef struct
 {
-    uint64_t p;
-    int n;
-    uint64_t q;
-    uint32_t* alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
-    uint32_t* log;  /* log[code] = i, for code != 0 */
+	uint64_t p;
+	int n;
+	uint64_t q;
+	uint32_t* alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
+	uint32_t* log;  /* log[code] = i, for code != 0 */
 } code_field;
-
-/* ---- Integers ---------------------------------------------------------- */
 
 int gf_is_prime(uint64_t n)
 {
@@ -431,8 +429,7 @@ int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 		return GF_ERR_NOT_FOUND;
 	}
 
-	if (n == 1)
-	{
+	if (n == 1) {
 		for (row = 0; row < q; row++) {
 			elements[row] = (double) row;
 		}
@@ -447,8 +444,7 @@ int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 	memset(cur, 0, sizeof(cur));
 	cur[0] = 1;
 
-	for (row = 1; row < q; row++)
-	{
+	for (row = 1; row < q; row++) {
 		for (c = 0; c < n; c++){
 			elements[c * q + row] = (double) cur[c];
 		}
@@ -508,7 +504,7 @@ int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint6
 {
 	code_field F;
 	uint64_t cur[GF_MAX_DEGREE + 1];
-	uint64_t* m = NULL;
+	uint64_t *m = NULL;
 	uint64_t k0, k, code, w;
 	int d = 0, i, c;
 
@@ -558,8 +554,8 @@ int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint6
 			w *= p;
 		}
 
-		F.alog[k] = (uint32_t)code;
-		F.log[code] = (uint32_t)k;
+		F.alog[k] = (uint32_t) code;
+		F.log[code] = (uint32_t) k;
 
 		for (c = n; c > 0; c--){
 			cur[c] = cur[c - 1];
@@ -572,7 +568,7 @@ int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint6
 
 	/* m(x) = product of (x - alpha^(e p^j)) over the distinct conjugates. */
 	m[0] = 1;
-	k0 = (uint64_t)e % (F.q - 1);
+	k0 = (uint64_t) e % (F.q - 1);
 	k = k0;
 
 	do {
