@@ -131,6 +131,7 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
 		return 1;
 	}
+
 	for (i = 0; i < count && status == 0; i++){
 		status = gf_elem_pow(field.p, field.n, field.f, a + i * field.n, e, r + i * field.n);
 	}
@@ -143,5 +144,6 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 	
 	free(a);
 	free(r);
+  
 	return status != 0;
 }

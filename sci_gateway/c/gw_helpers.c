@@ -14,7 +14,7 @@
 
 #define GW_MAX_EXACT 9007199254740992.0 /* 2^53 */
 
-int gw_check_nin(const char* fname, int nin, int min, int max)
+int gw_check_nin(const char *fname, int nin, int min, int max)
 {
 	if (nin < min || nin > max)
 	{
@@ -38,6 +38,7 @@ int gw_get_real(scilabEnv env, scilabVar var, const char* fname, int pos, double
 
 	scilab_getDim2d(env, var, rows, cols);
 	scilab_getDoubleArray(env, var, data);
+
 	return 0;
 }
 
@@ -50,8 +51,9 @@ int gw_get_scalar_int(scilabEnv env, scilabVar var, const char *fname, int pos, 
 {
 	double *data = NULL;
 	int rows = 0, cols = 0;
+	
 	if (gw_get_real(env, var, fname, pos, &data, &rows, &cols)) {
-			return 1;
+		return 1;
 	}
 
 	if (rows * cols != 1 || !is_integer(data[0])) {
@@ -64,7 +66,7 @@ int gw_get_scalar_int(scilabEnv env, scilabVar var, const char *fname, int pos, 
 	return 0;
 }
 
-int gw_get_scalar_uint(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t* value)
+int gw_get_scalar_uint(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t *value)
 {
 	int64_t v = 0;
 
@@ -82,7 +84,7 @@ int gw_get_scalar_uint(scilabEnv env, scilabVar var, const char* fname, int pos,
 	return 0;
 }
 
-int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t* p)
+int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t *p)
 {
 	if (gw_get_scalar_uint(env, var, fname, pos, p)) {
 		return 1;
@@ -290,7 +292,7 @@ int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, co
 			*count = *rows;
     }
 
-    *data = (uint64_t*) malloc((size_t) *count * n * sizeof(uint64_t));
+    *data = (uint64_t *) malloc((size_t) *count * n * sizeof(uint64_t));
     
 		if (*data == NULL){
       Scierror(999, _("%s: Memory allocation error.\n"), fname);
@@ -305,7 +307,7 @@ int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, co
 				if (read_coeff(v, field->p, &(*data)[r * n + c])) {
 					free(*data);
 					*data = NULL;
-					Scierror(999, _("%s: Wrong value for input argument #%d: Integers in [0, %llu] expected.\n"), fname, pos, (unsigned long long)(field->p - 1));
+					Scierror(999, _("%s: Wrong value for input argument #%d: Integers in [0, %llu] expected.\n"), fname, pos, (unsigned long long) (field->p - 1));
 					return 1;
 				}
 			}
@@ -351,7 +353,7 @@ scilabVar gw_create_row(scilabEnv env, const uint64_t *values, int len)
 	scilab_getDoubleArray(env, out, &data);
 	
 	for (i = 0; i < len; i++) {
-		data[i] = (double)values[i];
+		data[i] = (double) values[i];
 	}
 
 	return out;
