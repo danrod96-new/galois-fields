@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_poly_add" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_poly_add</refname>
+        <refpurpose>Suma polinomios sobre GF(p)</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>c = gf_poly_add(a, b, p)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>a, b</term>
+                <listitem>
+                    <para>Polinomio sobre GF(p): un vector fila de coeficientes enteros en 0 .. p-1, empezando por el término constante. Por ejemplo, <literal>[1 0 1 1]</literal> es 1 + x² + x³. Los dos polinomios pueden tener distinta longitud.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Número primo: la característica del campo.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>Resultado como fila de coeficientes, empezando por el término constante, recortada a su grado (sin ceros finales). El polinomio cero se devuelve como <literal>0</literal>.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_poly_add(a, b, p)</literal> calcula a + b, sumando módulo p los coeficientes del mismo grado.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+gf_poly_add([1 1 0 1], [0 1 1], 2)   // [1 0 1 1]
+gf_poly_add([1 1 1], [1 1 1], 2)     // 0
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_poly_subtract">gf_poly_subtract</link></member>
+            <member><link linkend="gf_poly_multiply">gf_poly_multiply</link></member>
+            <member><link linkend="gf_add">gf_add</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox. Se aceptan operandos de distinta longitud y el resultado se recorta.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

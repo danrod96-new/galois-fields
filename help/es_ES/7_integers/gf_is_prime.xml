@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_is_prime" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_is_prime</refname>
+        <refpurpose>Comprueba si enteros son primos</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>tf = gf_is_prime(x)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>x</term>
+                <listitem>
+                    <para>Matriz de enteros no negativos, menores que 2^53.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>tf</term>
+                <listitem>
+                    <para>Matriz booleana del mismo tamaño que x: <literal>T</literal> donde la entrada es prima.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_is_prime</literal> comprueba cada entrada de x por división de prueba. 0 y 1 no son primos. Puede usarse para verificar una característica antes de llamar a <link linkend="gf_create_field">gf_create_field</link>.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+gf_is_prime([0 1 2 9 97])      // [F F  T F T]
+x = 1:30;
+x(gf_is_prime(x))              // primos hasta 30
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_mod">gf_mod</link></member>
+            <member><link type="scilab" linkend="scilab.help/primes">primes</link></member>
+            <member><link type="scilab" linkend="scilab.help/factor">factor</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

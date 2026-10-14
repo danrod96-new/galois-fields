@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_multiply" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_multiply</refname>
+        <refpurpose>Multiplica elementos de un campo finito</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>c = gf_multiply(F, a, b)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo creado con <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a, b</term>
+                <listitem>
+                    <para>Elementos del campo.</para>
+                    <itemizedlist>
+                        <listitem><para>En GF(p) (n = 1): una matriz de enteros en 0 .. p-1, de cualquier tamaño.</para></listitem>
+                        <listitem><para>En GF(p^n), n &gt; 1: una matriz de n columnas, un elemento por fila. Cada fila contiene los coeficientes de un polinomio en α de grado &lt; n, empezando por el término constante.</para></listitem>
+                    </itemizedlist>
+                    <para>Los coeficientes fuera de 0 .. p-1 se rechazan; si es necesario, redúzcalos antes con <link linkend="gf_mod">gf_mod</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>El resultado, en la misma forma que los operandos.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_multiply(F, a, b)</literal> calcula a × b en el campo F. Para n &gt; 1 los operandos se multiplican como polinomios en α y el producto se reduce módulo el polinomio primitivo del campo. En notación exponencial, α^i × α^j = α^((i + j) mod (p^n - 1)).</para>
+        <para>Ambos operandos deben contener el mismo número de elementos, o uno de ellos debe ser un único elemento; un único elemento se combina con cada elemento del otro operando. El resultado tiene la forma del operando que contiene varios elementos (la de <literal>a</literal> cuando ambos tienen el mismo número).</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+a = [0 1 0 0];                    // alpha
+b = [1 1 0 0];                    // 1 + alpha = alpha^4
+c = gf_multiply(F, a, b)          // [0 1 1 0]
+gf_to_exponential(F, c)           // 5
+
+// alpha por alpha^0, alpha^1, alpha^2
+gf_multiply(F, F(4)(2:4, :), a)
+
+P = gf_create_field(7, 1);
+gf_multiply(P, [3 4 5], 6)        // [4 3 2]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_divide">gf_divide</link></member>
+            <member><link linkend="gf_power">gf_power</link></member>
+            <member><link linkend="gf_poly_multiply">gf_poly_multiply</link></member>
+            <member><link linkend="gf_multiplication_table">gf_multiplication_table</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox. Acepta varios elementos a la vez; los argumentos no válidos generan errores.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_to_exponential" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_to_exponential</refname>
+        <refpurpose>Convierte elementos de GF(p^n) a notación exponencial α^k</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>k = gf_to_exponential(F, a)
+k = gf_to_exponential(F, a, format)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo de extensión GF(p^n), n &gt; 1, creado con <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Elementos: una matriz de n columnas de enteros en 0 .. p-1, un elemento por fila (empezando por el término constante).</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>format</term>
+                <listitem>
+                    <para><literal>"e"</literal> (por defecto) para devolver exponentes, o <literal>"c"</literal> para devolver cadenas.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>k</term>
+                <listitem>
+                    <para>Vector columna con una entrada por cada fila de a.</para>
+                    <itemizedlist>
+                        <listitem><para>Con <literal>"e"</literal>: el entero k tal que el elemento es α^k, en 0 .. p^n - 2, o -1 para el elemento cero.</para></listitem>
+                        <listitem><para>Con <literal>"c"</literal>: las cadenas <literal>"x^k"</literal>, donde x representa a α, o <literal>"0"</literal> para el elemento cero.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_to_exponential</literal> halla el logaritmo discreto en base α de cada elemento, siendo α la raíz del polinomio primitivo del campo. Así la multiplicación se convierte en suma de exponentes módulo p^n - 1. <link linkend="gf_minimal_polynomial">gf_minimal_polynomial</link> recibe su argumento de elemento en esta forma.</para>
+        <para>La conversión inversa es una búsqueda en la tabla de elementos: α^k es <literal>F(4)(k + 2, :)</literal>. Solo se admiten campos de extensión (n &gt; 1).</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+gf_to_exponential(F, [0 1 1 0])            // 5: alpha + alpha^2 = alpha^5
+gf_to_exponential(F, [0 0 0 0; 0 1 1 0], "c")   // ["0"; "x^5"]
+gf_to_exponential(F, F(4))                 // -1, 0, 1, ..., 14
+
+// De un exponente de vuelta a coeficientes
+F(4)(5 + 2, :)                             // [0 1 1 0]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_to_polynomial">gf_to_polynomial</link></member>
+            <member><link linkend="gf_elements">gf_elements</link></member>
+            <member><link linkend="gf_minimal_polynomial">gf_minimal_polynomial</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_mod" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_mod</refname>
+        <refpurpose>Resto no negativo de enteros módulo m</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>r = gf_mod(x, m)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>x</term>
+                <listitem>
+                    <para>Matriz de enteros, positivos o negativos, menores que 2^53 en valor absoluto.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>m</term>
+                <listitem>
+                    <para>Módulo: un escalar entero positivo.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>r</term>
+                <listitem>
+                    <para>Matriz del mismo tamaño que x, con entradas en 0 .. m-1.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_mod(x, m)</literal> devuelve el resto de cada entrada de x módulo m, siempre en 0 .. m-1. Cuando m = p es el representante en GF(p) de un entero, así que convierte enteros cualesquiera en coeficientes válidos para las demás funciones del toolbox.</para>
+        <para>La función <literal>modulo</literal> de Scilab conserva el signo de x para valores negativos; <literal>gf_mod</literal> da el mismo resultado que <literal>pmodulo</literal>.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+gf_mod([-7 -1 0 4 12], 5)      // [3 4 0 4 2]
+modulo([-7 -1 0 4 12], 5)      // [-2 -1 0 4 2], para comparar
+
+// El elemento -alpha de GF(3^2), como coeficientes válidos
+gf_mod(-[0 1], 3)              // [0 2]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_is_prime">gf_is_prime</link></member>
+            <member><link type="scilab" linkend="scilab.help/pmodulo">pmodulo</link></member>
+            <member><link type="scilab" linkend="scilab.help/modulo">modulo</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

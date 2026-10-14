@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_power" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_power</refname>
+        <refpurpose>Eleva elementos de un campo finito a una potencia entera</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>c = gf_power(F, a, e)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo creado con <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Elementos del campo.</para>
+                    <itemizedlist>
+                        <listitem><para>En GF(p) (n = 1): una matriz de enteros en 0 .. p-1, de cualquier tamaño.</para></listitem>
+                        <listitem><para>En GF(p^n), n &gt; 1: una matriz de n columnas, un elemento por fila. Cada fila contiene los coeficientes de un polinomio en α de grado &lt; n, empezando por el término constante.</para></listitem>
+                    </itemizedlist>
+                    <para>Los coeficientes fuera de 0 .. p-1 se rechazan; si es necesario, redúzcalos antes con <link linkend="gf_mod">gf_mod</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>e</term>
+                <listitem>
+                    <para>Exponente: un escalar entero no negativo.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>a^e para cada elemento de a, en la misma forma que a.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_power(F, a, e)</literal> calcula a^e en el campo F para cada elemento de a.</para>
+        <itemizedlist>
+            <listitem><para>a^0 es 1 para a no nulo.</para></listitem>
+            <listitem><para>0^e es 0 para e &gt; 0, y 0^0 genera un error.</para></listitem>
+            <listitem><para>Como todo elemento no nulo cumple a^(q-1) = 1, con q = p^n, el exponente puede ser arbitrariamente grande.</para></listitem>
+        </itemizedlist>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+alpha = [0 1 0 0];
+gf_power(F, alpha, 4)      // [1 1 0 0]: alpha^4 = 1 + alpha
+gf_power(F, alpha, 15)     // [1 0 0 0]: alpha^15 = 1
+gf_to_exponential(F, gf_power(F, alpha, 100))   // 10, ya que 100 = 6*15 + 10
+
+P = gf_create_field(7, 1);
+gf_power(P, 1:6, 3)        // [1 1 6 1 6 6]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_multiply">gf_multiply</link></member>
+            <member><link linkend="gf_poly_power">gf_poly_power</link></member>
+            <member><link linkend="gf_primitive_elements">gf_primitive_elements</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox. Acepta varios elementos a la vez. Corregido: a^(q-1) ahora da 1 para a no nulo.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

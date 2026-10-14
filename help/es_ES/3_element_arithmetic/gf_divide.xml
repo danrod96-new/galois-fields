@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_divide" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_divide</refname>
+        <refpurpose>Divide elementos de un campo finito</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>c = gf_divide(F, a, b)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo creado con <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>a, b</term>
+                <listitem>
+                    <para>Elementos del campo.</para>
+                    <itemizedlist>
+                        <listitem><para>En GF(p) (n = 1): una matriz de enteros en 0 .. p-1, de cualquier tamaño.</para></listitem>
+                        <listitem><para>En GF(p^n), n &gt; 1: una matriz de n columnas, un elemento por fila. Cada fila contiene los coeficientes de un polinomio en α de grado &lt; n, empezando por el término constante.</para></listitem>
+                    </itemizedlist>
+                    <para>Los coeficientes fuera de 0 .. p-1 se rechazan; si es necesario, redúzcalos antes con <link linkend="gf_mod">gf_mod</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>c</term>
+                <listitem>
+                    <para>El resultado, en la misma forma que los operandos.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_divide(F, a, b)</literal> calcula a / b = a × b^(-1) en el campo F. Se genera un error si algún divisor es cero.</para>
+        <para>Ambos operandos deben contener el mismo número de elementos, o uno de ellos debe ser un único elemento; un único elemento se combina con cada elemento del otro operando. El resultado tiene la forma del operando que contiene varios elementos (la de <literal>a</literal> cuando ambos tienen el mismo número).</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+c = gf_divide(F, [0 1 0 0], [1 1 0 0])   // alpha / alpha^4 = alpha^12 = [1 1 1 1]
+gf_to_exponential(F, c)                  // 12
+
+// Inversos de los elementos no nulos de GF(7)
+P = gf_create_field(7, 1);
+gf_divide(P, 1, 1:6)                     // [1 4 5 2 3 6]
+
+try
+    gf_divide(F, [0 1 0 0], [0 0 0 0]);
+catch
+    disp(lasterror())                    // gf_divide: Division by zero.
+end
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_multiply">gf_multiply</link></member>
+            <member><link linkend="gf_power">gf_power</link></member>
+            <member><link linkend="gf_poly_divide">gf_poly_divide</link></member>
+            <member><link linkend="gf_division_table">gf_division_table</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox. Acepta varios elementos a la vez; los argumentos no válidos generan errores.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

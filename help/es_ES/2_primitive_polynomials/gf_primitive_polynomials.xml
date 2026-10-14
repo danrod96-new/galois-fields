@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_primitive_polynomials" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_primitive_polynomials</refname>
+        <refpurpose>Todos los polinomios primitivos mónicos de un grado dado sobre GF(p)</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>P = gf_primitive_polynomials(p, n)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Número primo: la característica del campo, como máximo 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>n</term>
+                <listitem>
+                    <para>Grado: un entero de 1 a 20, con p^n ≤ 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>P</term>
+                <listitem>
+                    <para>Matriz con un polinomio por fila, cada uno con n + 1 coeficientes, empezando por el término constante. Tiene φ(p^n - 1)/n filas.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_primitive_polynomials</literal> lista todos los polinomios primitivos mónicos de grado n sobre GF(p). Cualquiera de ellos puede pasarse a <link linkend="gf_create_field">gf_create_field</link>.</para>
+        <itemizedlist>
+            <listitem><para>Para n &gt; 1 las filas siguen el orden descrito en <link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link>, por lo que la primera fila es el polinomio por defecto.</para></listitem>
+            <listitem><para>Para n = 1 las filas son x - g para cada raíz primitiva g módulo p, en orden creciente de g.</para></listitem>
+        </itemizedlist>
+        <para>Se prueban los p^n candidatos, así que el tiempo crece con p^n; la función está pensada para campos pequeños.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+gf_primitive_polynomials(2, 4)   // [1 1 0 0 1; 1 0 0 1 1]
+gf_primitive_polynomials(7, 1)   // [4 1; 2 1]: x - 3 y x - 5
+size(gf_primitive_polynomials(3, 3), "r")   // 4
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link></member>
+            <member><link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link></member>
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

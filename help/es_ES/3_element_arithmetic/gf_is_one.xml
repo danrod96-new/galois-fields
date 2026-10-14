@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_is_one" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_is_one</refname>
+        <refpurpose>Comprueba si un arreglo representa el elemento unidad</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>tf = gf_is_one(a)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Vector real: un elemento o un polinomio, empezando por el término constante.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>tf</term>
+                <listitem>
+                    <para><literal>T</literal> si la primera entrada de a es 1 y todas las demás son 0.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_is_one(a)</literal> comprueba si a es el elemento unidad 1 (o el polinomio constante 1). Las entradas de a se leen en orden de columnas, así que está pensada para un único elemento.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);
+gf_is_one(gf_power(F, [0 1 0 0], 15))   // T
+gf_is_one([0 1 0 0])                    // F
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_is_zero">gf_is_zero</link></member>
+            <member><link linkend="gf_are_equal">gf_are_equal</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

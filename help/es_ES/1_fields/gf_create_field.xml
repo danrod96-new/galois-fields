@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_create_field" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_create_field</refname>
+        <refpurpose>Crea el campo finito GF(p^n) a partir de un polinomio primitivo</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>F = gf_create_field(p, n)
+F = gf_create_field(p, n, f)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Número primo: la característica del campo, como máximo 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>n</term>
+                <listitem>
+                    <para>Grado del campo sobre GF(p): un entero de 1 a 20, con p^n ≤ 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>f</term>
+                <listitem>
+                    <para>Polinomio primitivo de grado n sobre GF(p): una fila de n + 1 coeficientes enteros en 0 .. p-1, empezando por el término constante, con el último coeficiente no nulo. No necesita ser mónico. Si se omite, se usa el polinomio que devuelve <link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>El campo: <literal>list(p, n, f, elements)</literal>.</para>
+                    <itemizedlist>
+                        <listitem><para><literal>F(1)</literal> es p y <literal>F(2)</literal> es n.</para></listitem>
+                        <listitem><para><literal>F(3)</literal> es el polinomio primitivo (n + 1 coeficientes, empezando por el término constante).</para></listitem>
+                        <listitem><para><literal>F(4)</literal> es la tabla de todos los elementos. Para n = 1 es la fila <literal>0:p-1</literal>. Para n &gt; 1 es una matriz de p^n × n: la fila 1 es el elemento cero y la fila k + 2 es α^k, siendo α una raíz de f.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_create_field</literal> construye el campo de orden p^n que usan las demás funciones del toolbox.</para>
+        <para>El polinomio f debe ser primitivo, no solo irreducible: sus raíces deben generar el grupo multiplicativo del campo, de modo que todo elemento no nulo sea una potencia de α. <link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link> lo comprueba, y <link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link> lista todos los polinomios primitivos mónicos de un grado dado. Si f no es primitivo se genera un error.</para>
+        <para>Para n = 1, f tiene grado 1 y su raíz -f(1)/f(2) es una raíz primitiva módulo p.</para>
+        <para>La tabla de elementos se calcula una sola vez, al crear el campo. Tiene p^n filas de n números reales (double).</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+// GF(16) con el polinomio primitivo por defecto 1 + x + x^4
+F = gf_create_field(2, 4);
+F(3)              // [1 1 0 0 1]
+F(4)(1:6, :)      // 0, 1, alpha, alpha^2, alpha^3, alpha^4 = 1 + alpha
+
+// El mismo campo construido con otro polinomio primitivo: 1 + x^3 + x^4
+G = gf_create_field(2, 4, [1 0 0 1 1]);
+
+// 1 + x + x^2 + x^3 + x^4 es irreducible pero no primitivo
+try
+    gf_create_field(2, 4, [1 1 1 1 1]);
+catch
+    disp(lasterror())
+end
+
+// El campo primo GF(7); su polinomio por defecto es x - 3 = x + 4
+P = gf_create_field(7, 1);
+P(3)              // [4 1]
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link></member>
+            <member><link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link></member>
+            <member><link linkend="gf_primitive_polynomials">gf_primitive_polynomials</link></member>
+            <member><link linkend="gf_elements">gf_elements</link></member>
+            <member><link linkend="gf_order">gf_order</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox. Ahora se usa un polinomio primitivo por defecto para cualquier n (antes solo estaba disponible para n = 1). Los argumentos no válidos generan errores.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

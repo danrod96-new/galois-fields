@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_check_field" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_check_field</refname>
+        <refpurpose>Comprueba que una variable sea un campo creado con gf_create_field</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>gf_check_field(F, caller)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Cualquier variable de Scilab.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>caller</term>
+                <listitem>
+                    <para>Nombre de la función que hace la llamada, usado al comienzo del mensaje de error.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_check_field</literal> termina sin mensajes cuando F es un campo válido (una lista de 4 elementos con característica prima, un grado admitido y un polinomio primitivo del tamaño correcto); en caso contrario genera un error atribuido a <literal>caller</literal>.</para>
+        <para>Lo usan las propias funciones del toolbox y es útil al escribir funciones nuevas que reciben un campo como argumento.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+function y = my_field_size(F)
+    gf_check_field(F, "my_field_size");
+    y = gf_order(F);
+endfunction
+
+my_field_size(gf_create_field(5, 2))   // 25
+
+try
+    my_field_size(list(1, 2))
+catch
+    disp(lasterror())   // my_field_size: Wrong type for input argument #1: ...
+end
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Función añadida.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

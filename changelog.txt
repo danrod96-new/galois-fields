@@ -11,6 +11,7 @@ galois_fields 2.1.0 (unreleased)
       - gf_minimal_polynomial no longer builds the whole power table.
       - Division in other extension fields without cached tables inverts
         with the extended Euclidean algorithm on polynomials.
+    * Added Spanish (es_ES) help pages.
  -- Daniel E Rodriguez (UIS)
 
 galois_fields 2.0.0 (2026-10-10)

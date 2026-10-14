@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_poly_divide" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_poly_divide</refname>
+        <refpurpose>División con resto de polinomios sobre GF(p)</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>r = gf_poly_divide(a, b, p)
+[r, q] = gf_poly_divide(a, b, p)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>a</term>
+                <listitem>
+                    <para>Dividendo. Polinomio sobre GF(p): un vector fila de coeficientes enteros en 0 .. p-1, empezando por el término constante. Por ejemplo, <literal>[1 0 1 1]</literal> es 1 + x² + x³.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>b</term>
+                <listitem>
+                    <para>Divisor, no nulo. Misma forma que a; los dos pueden tener distinta longitud.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Número primo: la característica del campo.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>r</term>
+                <listitem>
+                    <para>Resto, de grado menor que b. Resultado como fila de coeficientes, empezando por el término constante, recortada a su grado (sin ceros finales). El polinomio cero se devuelve como <literal>0</literal>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>q</term>
+                <listitem>
+                    <para>Cociente, en la misma forma que r.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_poly_divide(a, b, p)</literal> divide a entre b sobre GF(p): halla q y r tales que a = q × b + r con gr r &lt; gr b. El resto se devuelve primero; el cociente es la segunda salida, opcional.</para>
+        <para>b no necesita ser mónico. Se genera un error si b es el polinomio cero.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+// (1 + x^2 + x^3) / (1 + x) sobre GF(2)
+[r, q] = gf_poly_divide([1 0 1 1], [1 1], 2)   // r = 1, q = [0 0 1] (x^2)
+
+// x^2 + 2 = (x + 2)(x + 1) sobre GF(3)
+[r, q] = gf_poly_divide([2 0 1], [1 1], 3)     // r = 0, q = [2 1]
+
+// El dividendo tiene menor grado que el divisor
+[r, q] = gf_poly_divide([1 1], [1 0 1], 2)     // r = [1 1], q = 0
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_poly_multiply">gf_poly_multiply</link></member>
+            <member><link linkend="gf_divide">gf_divide</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

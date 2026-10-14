@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_division_table" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_division_table</refname>
+        <refpurpose>Tabla de división de un campo primo</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>T = gf_division_table(F)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo primo GF(p) creado con <link linkend="gf_create_field">gf_create_field</link> con n = 1.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>T</term>
+                <listitem>
+                    <para>La tabla: T(i, j) = i / j, para i, j = 1 .. p - 1; T es una matriz de (p - 1) × (p - 1) (se omite el cero).</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para><literal>gf_division_table</literal> devuelve la tabla completa de la operación en GF(p), calculada módulo p. Solo se admiten campos primos (n = 1); para n &gt; 1 se genera un error.</para>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(5, 1);
+gf_division_table(F)
+// Resultado:
+// 1 3 2 4
+// 2 1 4 3
+// 3 4 1 2
+// 4 2 3 1
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_multiplication_table">gf_multiplication_table</link></member>
+            <member><link linkend="gf_divide">gf_divide</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>

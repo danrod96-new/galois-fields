@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (C) Daniel E Rodriguez - UIS.
+ * Parte del toolbox galois_fields.
+-->
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns3="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="gf_minimal_polynomial" xml:lang="es">
+
+    <refnamediv>
+        <refname>gf_minimal_polynomial</refname>
+        <refpurpose>Polinomio mínimo sobre GF(p) de un elemento del campo</refpurpose>
+    </refnamediv>
+    <refsynopsisdiv>
+        <title>Secuencia de llamado</title>
+        <synopsis>m = gf_minimal_polynomial(F, e)
+m = gf_minimal_polynomial(p, n, e)</synopsis>
+    </refsynopsisdiv>
+    <refsection>
+        <title>Parámetros</title>
+        <variablelist>
+            <varlistentry>
+                <term>F</term>
+                <listitem>
+                    <para>Un campo creado con <link linkend="gf_create_field">gf_create_field</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>p</term>
+                <listitem>
+                    <para>Número primo: la característica del campo, como máximo 2^20.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>n</term>
+                <listitem>
+                    <para>Grado del campo: un entero de 1 a 20, con p^n ≤ 2^20. Con esta sintaxis, el campo usa el polinomio primitivo que devuelve <link linkend="gf_default_primitive_polynomial">gf_default_primitive_polynomial</link>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>e</term>
+                <listitem>
+                    <para>El elemento, como entero.</para>
+                    <itemizedlist>
+                        <listitem><para>Para n = 1: el propio elemento, en 0 .. p-1.</para></listitem>
+                        <listitem><para>Para n &gt; 1: el exponente k de α^k, en -1 .. p^n - 2. Use -1 para el elemento cero. <link linkend="gf_to_exponential">gf_to_exponential</link> convierte a esta forma un elemento dado por sus coeficientes.</para></listitem>
+                    </itemizedlist>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>m</term>
+                <listitem>
+                    <para>El polinomio mínimo: una fila de n + 1 coeficientes, empezando por el término constante. Su grado d divide a n; cuando d &lt; n, la fila se completa con ceros a la derecha.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </refsection>
+    <refsection>
+        <title>Descripción</title>
+        <para>El polinomio mínimo de un elemento β de GF(p^n) es el polinomio mónico de menor grado con coeficientes en GF(p) que tiene a β como raíz. Es el producto de (x - γ) sobre los conjugados distintos γ = β, β^p, β^(p²), ... de β.</para>
+        <para>Algunos casos particulares:</para>
+        <itemizedlist>
+            <listitem><para>el polinomio mínimo de 0 es x, y el de 1 es x - 1;</para></listitem>
+            <listitem><para>el polinomio mínimo de un elemento primitivo es un polinomio primitivo; para α es el propio polinomio primitivo del campo;</para></listitem>
+            <listitem><para>en GF(p) (n = 1), el polinomio mínimo de e es x - e.</para></listitem>
+        </itemizedlist>
+    </refsection>
+    <refsection>
+        <title>Ejemplos</title>
+        <programlisting role="example"><![CDATA[
+F = gf_create_field(2, 4);        // 1 + x + x^4
+gf_minimal_polynomial(F, 1)       // [1 1 0 0 1]: alpha tiene el polinomio del campo
+gf_minimal_polynomial(F, 3)       // [1 1 1 1 1]
+gf_minimal_polynomial(F, 5)       // [1 1 1 0 0]: alpha^5 está en el subcampo GF(4)
+gf_minimal_polynomial(F, 0)       // [1 1 0 0 0]: 1 + x para el elemento 1
+gf_minimal_polynomial(F, -1)      // [0 1 0 0 0]: x para el elemento 0
+
+// Elemento dado por sus coeficientes
+k = gf_to_exponential(F, [1 1 0 1]);
+gf_minimal_polynomial(F, k)
+
+// Sin crear antes el campo
+gf_minimal_polynomial(7, 1, 3)    // [4 1]: x - 3
+]]></programlisting>
+    </refsection>
+    <refsection role="see also">
+        <title>Ver también</title>
+        <simplelist type="inline">
+            <member><link linkend="gf_to_exponential">gf_to_exponential</link></member>
+            <member><link linkend="gf_is_primitive_polynomial">gf_is_primitive_polynomial</link></member>
+            <member><link linkend="gf_create_field">gf_create_field</link></member>
+        </simplelist>
+    </refsection>
+    <refsection role="history">
+        <title>Historial</title>
+        <revhistory>
+            <revision>
+                <revnumber>2.0.0</revnumber>
+                <revdescription>
+                    <para>Refactorización de la función/toolbox.</para>
+                </revdescription>
+            </revision>
+        </revhistory>
+    </refsection>
+</refentry>
