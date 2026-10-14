@@ -399,6 +399,77 @@ int gf_elem_pow(uint64_t p, int n, const uint64_t *f, const uint64_t *a, uint64_
 	return GF_OK;
 }
 
+/* Inverse of a non-zero b modulo f (degree n) over GF(p), by the extended
+ * Euclidean algorithm on polynomials: s * b = r (mod f) holds for both rows.
+ * Returns 0 if gcd(b, f) is not a constant (f not irreducible). */
+static int poly_inv(uint64_t p, int n, const uint64_t *f, const uint64_t *b, uint64_t *inv)
+{
+	uint64_t ra[GF_MAX_DEGREE + 1], rb[GF_MAX_DEGREE + 1];
+	uint64_t sa[2 * GF_MAX_DEGREE + 2], sb[2 * GF_MAX_DEGREE + 2];
+	uint64_t *r0 = ra, *r1 = rb, *s0 = sa, *s1 = sb, *tp, c;
+	int d0 = n, d1, l0 = 0, l1 = 1, shift, j, ti;
+
+	memcpy(r0, f, (n + 1) * sizeof(uint64_t));
+	memcpy(r1, b, n * sizeof(uint64_t));
+	r1[n] = 0;
+	memset(sa, 0, sizeof(sa));
+	memset(sb, 0, sizeof(sb));
+	s1[0] = 1;
+	d1 = gf_poly_degree(r1, n);
+
+	while (d0 > 0 && d1 > 0) {
+		if (d0 < d1) {
+			tp = r0; r0 = r1; r1 = tp;
+			tp = s0; s0 = s1; s1 = tp;
+			ti = d0; d0 = d1; d1 = ti;
+			ti = l0; l0 = l1; l1 = ti;
+		}
+
+		/* r0 -= c x^shift r1 and s0 -= c x^shift s1, cancelling r0's lead. */
+		shift = d0 - d1;
+		c = p - (r0[d0] * gf_inv_mod(r1[d1], p)) % p;
+
+		for (j = 0; j <= d1; j++) {
+			r0[shift + j] = (r0[shift + j] + c * r1[j]) % p;
+		}
+
+		if (l1 + shift > 2 * GF_MAX_DEGREE + 2) {
+			return 0;
+		}
+
+		for (j = 0; j < l1; j++) {
+			s0[shift + j] = (s0[shift + j] + c * s1[j]) % p;
+		}
+
+		if (l1 + shift > l0) {
+			l0 = l1 + shift;
+		}
+
+		d0 = gf_poly_degree(r0, d0);
+	}
+
+	if (d0 != 0) {
+		if (d1 != 0) {
+			return 0;
+		}
+
+		r0 = r1;
+		s0 = s1;
+		l0 = l1;
+	}
+
+	/* r0 is a non-zero constant: inv = s0 / r0[0]. */
+	c = gf_inv_mod(r0[0], p);
+
+	for (j = 0; j < l0; j++) {
+		s0[j] = (s0[j] * c) % p;
+	}
+
+	reduce(p, n, f, s0, l0, inv);
+
+	return 1;
+}
+
 int gf_elem_div(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
 	uint64_t inverse[GF_MAX_DEGREE];
@@ -420,9 +491,12 @@ int gf_elem_div(uint64_t p, int n, const uint64_t *f, const uint64_t *a, const u
 		return GF_OK;
 	}
 
-	/* b^(q - 2) = b^-1 in GF(q). gf_tab_div is much faster when tables
-	 * are available. */
-	gf_elem_pow(p, n, f, b, q - 2, inverse);
+	/* gf_tab_div is faster still when tables are available. If f is not
+	 * irreducible, fall back to b^(q - 2) as before. */
+	if (!poly_inv(p, n, f, b, inverse)) {
+		gf_elem_pow(p, n, f, b, q - 2, inverse);
+	}
+
 	gf_elem_mul(p, n, f, a, inverse, r);
 	
 	return GF_OK;
