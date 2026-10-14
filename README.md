@@ -135,6 +135,6 @@ sources are in `help/en_US`.
 
 ## Not included yet
 
-- **Translations of the help.** Only English pages exist. Pages in another
-  language go in a sibling folder such as `help/es_ES`, which `builder.sce`
+- **Translations of the help.** Only English and Spanish pages exist. Pages in another
+  language go in a sibling folder such as `help/fr_FR`, which `builder.sce`
   picks up automatically.
