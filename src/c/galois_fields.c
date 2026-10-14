@@ -639,7 +639,7 @@ gf_tables *gf_tables_create(uint64_t p, int n, const uint64_t *f)
 	uint64_t k, code, w;
 	int c;
 
-	T = (gf_tables*) calloc(1, sizeof(gf_tables));
+	T = (gf_tables *) calloc(1, sizeof(gf_tables));
 
 	if (T == NULL) {
 		return NULL;
@@ -654,8 +654,8 @@ gf_tables *gf_tables_create(uint64_t p, int n, const uint64_t *f)
 		return NULL;
 	}
 
-	T->alog = (uint32_t*) malloc((T->q - 1) * sizeof(uint32_t));
-	T->log = (uint32_t*) calloc(T->q, sizeof(uint32_t));
+	T->alog = (uint32_t *) malloc((T->q - 1) * sizeof(uint32_t));
+	T->log = (uint32_t *) calloc(T->q, sizeof(uint32_t));
 
 	if (T->alog == NULL || T->log == NULL) {
 		gf_tables_free(T);
