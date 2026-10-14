@@ -25,7 +25,7 @@ Author: Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
 From the toolbox folder:
 
 ```scilab
-exec builder.sce   // compiles the C library and gateways, builds macros and help
+exec builder.sce   // compiles the C library and gateways, builds macros and help pages
 exec loader.sce    // loads the toolbox into the current session
 ```
 
