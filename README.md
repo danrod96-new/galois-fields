@@ -115,7 +115,7 @@ gf_minimal_polynomial(F, 3)          // [1 1 1 1 1] = 1 + x + x^2 + x^3 + x^4
 
 Every function has a help page with its arguments, a description and a
 worked example; start with `help galois_fields` for an overview. The page
-sources are in `help/en_US`.
+sources are in `help/en_US` and in `help/es_ES` (Spanish).
 
 ## Behaviour changes
 
