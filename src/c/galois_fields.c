@@ -11,14 +11,13 @@
 #include "galois_fields.h"
 
 /* Elements of GF(p^n) encoded as integers c0 + c1 p + ... (base p digits). */
-struct gf_tables
-{
+struct gf_tables {
 	uint64_t p;
 	int n;
 	uint64_t q;
 	uint64_t w[GF_MAX_DEGREE]; /* w[i] = p^i */
-	uint32_t* alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
-	uint32_t* log;  /* log[code] = i, for code != 0 */
+	uint32_t *alog; /* alog[i] = code of alpha^i, 0 <= i < q - 1 */
+	uint32_t *log;  /* log[code] = i, for code != 0 */
 };
 
 int gf_is_prime(uint64_t n)

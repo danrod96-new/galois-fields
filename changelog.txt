@@ -1,4 +1,4 @@
-galois_fields 2.1.0 (unreleased)
+galois_fields 2.1.0 (2026-10-14)
     * Faster element arithmetic (C core and gateways):
       - GF(2^n) multiplication, division, powers and element tables work on
         bit-packed words; inverses use the extended Euclidean algorithm.

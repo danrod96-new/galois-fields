@@ -16,7 +16,6 @@ function main_builder()
     tbx_builder_src(toolbox_dir);
     tbx_builder_gateway(toolbox_dir);
 
-    // The help is compiled to jar/ by Java tools, which scilab-cli lacks.
     if getscilabmode() <> "NWNI" then
         tbx_builder_help(toolbox_dir);
     else
