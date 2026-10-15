@@ -1,4 +1,3 @@
-// Scilab functions implemented in C (Scilab 6+ API, "csci6" gateways).
 function builder_gw_c()
     gateway_path = get_absolute_file_path();
     CFLAGS = ilib_include_flag([gateway_path, gateway_path + "../../src/c"]);

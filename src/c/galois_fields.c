@@ -559,8 +559,7 @@ static int is_primitive_with_factors(const uint64_t *f, int n, uint64_t p, uint6
 		}
 	}
 
-	for (i = 0; i < nfactors; i++)
-	{
+	for (i = 0; i < nfactors; i++) {
 		uint64_t e = (q - 1) / factors[i];
 		uint64_t base[GF_MAX_DEGREE];
 
