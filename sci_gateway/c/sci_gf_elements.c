@@ -126,6 +126,7 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 	free(a);
 	free(b);
 	free(r);
+	
 	return status != 0;
 }
 
