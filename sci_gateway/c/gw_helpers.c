@@ -94,6 +94,7 @@ int gw_get_prime(scilabEnv env, scilabVar var, const char* fname, int pos, uint6
 		Scierror(999, _("%s: Wrong value for input argument #%d: A prime number expected.\n"), fname, pos);
 		return 1;
 	}
+
 	if (*p > GF_MAX_ORDER) {
 		Scierror(999, _("%s: Wrong value for input argument #%d: The characteristic must not exceed %llu.\n"), fname, pos, (unsigned long long) GF_MAX_ORDER);
 		return 1;
@@ -145,7 +146,7 @@ static int read_coeff(double v, uint64_t p, uint64_t *out)
 
 int gw_get_coeffs(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t p, uint64_t **coeffs, int *len)
 {
-	double* data = NULL;
+	double *data = NULL;
 	int rows = 0, cols = 0, i;
 
 	if (gw_get_real(env, var, fname, pos, &data, &rows, &cols)) {
@@ -157,7 +158,7 @@ int gw_get_coeffs(scilabEnv env, scilabVar var, const char* fname, int pos, uint
 		return 1;
 	}
 
-	*coeffs = (uint64_t*) malloc(cols * sizeof(uint64_t));
+	*coeffs = (uint64_t *) malloc(cols * sizeof(uint64_t));
 
 	if (*coeffs == NULL) {
 		Scierror(999, _("%s: Memory allocation error.\n"), fname);
@@ -200,6 +201,7 @@ int gw_get_field(scilabEnv env, scilabVar var, const char *fname, int pos, gw_fi
 	if (scilab_isDouble(env, item) == 0 || scilab_getSize(env, item) != 1) {
 		return field_error(fname, pos);
 	}
+
 	scilab_getDoubleArray(env, item, &data);
 
 	if (!is_integer(data[0]) || !gf_is_prime((uint64_t)data[0]) || data[0] > (double)GF_MAX_ORDER) {
@@ -259,7 +261,7 @@ int gw_get_field(scilabEnv env, scilabVar var, const char *fname, int pos, gw_fi
 
 	scilab_getDim2d(env, item, &rows, &cols);
 	
-	if ((uint64_t) rows * (uint64_t)cols != field->q * (uint64_t) field->n) {
+	if ((uint64_t) rows * (uint64_t) cols != field->q * (uint64_t) field->n) {
 		return field_error(fname, pos);
 	}
 
@@ -268,51 +270,52 @@ int gw_get_field(scilabEnv env, scilabVar var, const char *fname, int pos, gw_fi
 
 int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, const gw_field *field, uint64_t **data, int *count, int *rows, int *cols)
 {
-    double *values = NULL;
-    int r, c;
-    int n = field->n;
+  double *values = NULL;
+  int r, c;
+  int n = field->n;
 
-    if (gw_get_real(env, var, fname, pos, &values, rows, cols)) {
-    	return 1;
-    }
+  if (gw_get_real(env, var, fname, pos, &values, rows, cols)) {
+    return 1;
+  }
 
-    if (*rows * *cols == 0) {
-      Scierror(999, _("%s: Wrong size for input argument #%d: A non-empty matrix expected.\n"), fname, pos);
-			return 1;
-    }
+  if (*rows * *cols == 0) {
+    Scierror(999, _("%s: Wrong size for input argument #%d: A non-empty matrix expected.\n"), fname, pos);
+    return 1;
+  }
 
-    if (n == 1) {
-      *count = *rows * *cols;
-    } else {
-			if (*cols != n) {
-				Scierror(999, _("%s: Wrong size for input argument #%d: %d columns expected (one element per row).\n"), fname, pos, n);
-				return 1;
-			}
-      
-			*count = *rows;
-    }
-
-    *data = (uint64_t *) malloc((size_t) *count * n * sizeof(uint64_t));
-    
-		if (*data == NULL){
-      Scierror(999, _("%s: Memory allocation error.\n"), fname);
+  if (n == 1) {
+    *count = *rows * *cols;
+  } else {
+    if (*cols != n) {
+      Scierror(999, _("%s: Wrong size for input argument #%d: %d columns expected (one element per row).\n"), fname, pos, n);
       return 1;
     }
+    
+    *count = *rows;
+  }
 
-    for (r = 0; r < *count; r++) {
-			for (c = 0; c < n; c++) {
-				/* Scilab stores matrices column by column. */
-				double v = n == 1 ? values[r] : values[c * *rows + r];
+  *data = (uint64_t *) malloc((size_t) *count * n * sizeof(uint64_t));
+  
+  if (*data == NULL){
+    Scierror(999, _("%s: Memory allocation error.\n"), fname);
+    return 1;
+  }
 
-				if (read_coeff(v, field->p, &(*data)[r * n + c])) {
-					free(*data);
-					*data = NULL;
-					Scierror(999, _("%s: Wrong value for input argument #%d: Integers in [0, %llu] expected.\n"), fname, pos, (unsigned long long) (field->p - 1));
-					return 1;
-				}
-			}
+  for (r = 0; r < *count; r++) {
+    for (c = 0; c < n; c++) {
+      /* Scilab stores matrices column by column. */
+      double v = n == 1 ? values[r] : values[c * *rows + r];
+
+      if (read_coeff(v, field->p, &(*data)[r * n + c])) {
+        free(*data);
+        *data = NULL;
+        Scierror(999, _("%s: Wrong value for input argument #%d: Integers in [0, %llu] expected.\n"), fname, pos, (unsigned long long) (field->p - 1));
+        return 1;
+      }
     }
-    return 0;
+  }
+  
+  return 0;
 }
 
 scilabVar gw_create_elements(scilabEnv env, const gw_field *field, const uint64_t *data, int count, int rows, int cols)
