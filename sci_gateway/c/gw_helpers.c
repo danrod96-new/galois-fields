@@ -296,7 +296,7 @@ int gw_get_elements(scilabEnv env, scilabVar var, const char *fname, int pos, co
 
   *data = (uint64_t *) malloc((size_t) *count * n * sizeof(uint64_t));
   
-  if (*data == NULL){
+  if (*data == NULL) {
     Scierror(999, _("%s: Memory allocation error.\n"), fname);
     return 1;
   }
