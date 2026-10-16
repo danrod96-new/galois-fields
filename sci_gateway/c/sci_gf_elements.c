@@ -30,8 +30,7 @@ static const gf_tables *field_tables(const gw_field *field, int count)
 		return NULL;
 	}
 
-	if (cached_tables != NULL && cached_field.p == field->p && cached_field.n == field->n
-		&& memcmp(cached_field.f, field->f, (field->n + 1) * sizeof(uint64_t)) == 0) {
+	if (cached_tables != NULL && cached_field.p == field->p && cached_field.n == field->n && memcmp(cached_field.f, field->f, (field->n + 1) * sizeof(uint64_t)) == 0) {
 		return cached_tables;
 	}
 
@@ -126,7 +125,7 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 	free(a);
 	free(b);
 	free(r);
-	
+
 	return status != 0;
 }
 

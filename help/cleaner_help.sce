@@ -1,4 +1,3 @@
-// Removes the generated help files of the galois_fields toolbox.
 function cleaner_help()
     path = get_absolute_file_path();
     langdirs = dir(path);

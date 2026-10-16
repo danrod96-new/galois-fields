@@ -1,4 +1,3 @@
-// Builds the help of the galois_fields toolbox (one jar per language).
 here = get_absolute_file_path();
 d = dir(here);
 d = d.name(d.isdir);
