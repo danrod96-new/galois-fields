@@ -4,7 +4,7 @@
 GF(p) and GF(p^n). It covers:
 
 - building fields from a primitive polynomial;
-- element arithmetic: add, subtract, multiply, divide, power;
+- element arithmetic: add, subtract, multiply, divide and power;
 - arithmetic on polynomials over GF(p);
 - primitive and minimal polynomials;
 - primitive elements;
