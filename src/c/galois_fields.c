@@ -160,7 +160,6 @@ uint64_t gf_primitive_root(uint64_t p)
  * writes the n remaining coefficients to r. */
 static void reduce(uint64_t p, int n, const uint64_t *f, uint64_t *t, int len, uint64_t *r)
 {
-	/* Primitive polynomials are usually monic, which needs no inverse. */
 	uint64_t inv_lead = f[n] == 1 ? 1 : gf_inv_mod(f[n], p);
 	uint64_t c;
 	int i, j;
@@ -176,7 +175,6 @@ static void reduce(uint64_t p, int n, const uint64_t *f, uint64_t *t, int len, u
 			c = (c * inv_lead) % p;
 		}
 
-		/* t -= c x^(i-n) f, written as t += (p - c) x^(i-n) f. */
 		c = p - c;
 
 		for (j = 0; j < n; j++) {
@@ -297,7 +295,6 @@ static uint32_t gf2_pow(int n, uint32_t poly, uint32_t a, uint64_t e)
 	return r;
 }
 
-/* Coefficients are in 0 .. p - 1, so sums need one conditional subtraction. */
 void gf_elem_add(uint64_t p, int n, const uint64_t *a, const uint64_t *b, uint64_t *r)
 {
 	uint64_t s;
@@ -424,7 +421,6 @@ static int poly_inv(uint64_t p, int n, const uint64_t *f, const uint64_t *b, uin
 			ti = l0; l0 = l1; l1 = ti;
 		}
 
-		/* r0 -= c x^shift r1 and s0 -= c x^shift s1, cancelling r0's lead. */
 		shift = d0 - d1;
 		c = p - (r0[d0] * gf_inv_mod(r1[d1], p)) % p;
 
@@ -691,7 +687,6 @@ int gf_field_elements(uint64_t p, int n, const uint64_t *f, double *elements)
 			elements[c * q + row] = (double) cur[c];
 		}
 		
-		/* cur = cur * x mod f */
 		for (c = n; c > 0; c--){
 			cur[c] = cur[c - 1];
 		}
@@ -739,7 +734,6 @@ gf_tables *gf_tables_create(uint64_t p, int n, const uint64_t *f)
 	}
 
 	if (n == 1) {
-		/* Powers of the root of f = x - g, which is g. */
 		uint64_t g = (p - f[0] % p) * gf_inv_mod(f[1], p) % p;
 
 		for (k = 0, code = 1; k < T->q - 1; k++) {
@@ -899,7 +893,6 @@ int gf_minimal_polynomial(uint64_t p, int n, const uint64_t *f, int64_t e, uint6
 	do {
 		gf_elem_pow(p, n, f, x, k, root);
 
-		/* m = m * (x - root) */
 		memcpy(m + (d + 1) * n, m + d * n, n * sizeof(uint64_t));
 
 		for (i = d; i > 0; i--) {
