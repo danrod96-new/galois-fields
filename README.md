@@ -11,8 +11,6 @@ GF(p) and GF(p^n). It covers:
 - operation tables;
 - conversion between polynomial and exponential (α^k) notation.
 
-Author: Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
-
 ## Requirements
 
 - Scilab 6.1 or later. Tested with Scilab 2024.0.0. It uses the Scilab 6 C
@@ -138,3 +136,7 @@ sources are in `help/en_US` and in `help/es_ES` (Spanish).
 - **Translations of the help.** Only English and Spanish pages exist. Pages in another
   language go in a sibling folder such as `help/fr_FR`, which `builder.sce`
   picks up automatically.
+
+## Author
+
+Copyright (C) 2009-2016  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
