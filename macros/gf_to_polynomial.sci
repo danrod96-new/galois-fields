@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // P = gf_to_polynomial(coefficients)
 //   Converts coefficient rows (constant term first) to Scilab polynomials
 //   in x, one per row.

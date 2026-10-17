@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // F = gf_primitive_polynomials(p, n)
 //   All monic primitive polynomials of degree n over GF(p), one per row
 //   (n + 1 coefficients, constant term first).

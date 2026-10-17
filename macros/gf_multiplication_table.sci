@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // T = gf_multiplication_table(field)
 //   Multiplication table of the prime field GF(p): T(i, j) = a * b with
 //   a = i - 1 and b = j - 1 (both in 0 .. p - 1).

@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // gf_check_field(field, caller)
 //   Raises an error, attributed to caller, unless field is a field created
 //   by gf_create_field.

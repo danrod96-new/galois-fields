@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // g = gf_primitive_elements(field)
 //   Primitive elements (generators of the multiplicative group) of the field.
 //   For n = 1: a row of integers in increasing order.

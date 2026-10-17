@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // k = gf_to_exponential(field, elements [, format])
 //   Exponents k such that each element (one per row) equals alpha^k, alpha
 //   being a root of the primitive polynomial (extension fields, n > 1).

@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // T = gf_division_table(field)
 //   Division table of the prime field GF(p): T(i, j) = a / b with
 //   a = i and b = j (both in 1 .. p - 1).

@@ -1,6 +1,3 @@
-// Copyright (C) Daniel E Rodriguez - UIS.
-// Part of the galois_fields toolbox.
-
 // e = gf_elements(field)
 //   Elements of the field as a column of Scilab polynomials in x: 0 first,
 //   then alpha^0, alpha^1, ..., alpha^(p^n - 2) for n > 1, or 0 .. p - 1
