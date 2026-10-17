@@ -166,7 +166,7 @@ int sci_gf_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt
 		return 1;
 	}
 
-	r = (uint64_t*) malloc((size_t) count * field.n * sizeof(uint64_t));
+	r = (uint64_t *) malloc((size_t) count * field.n * sizeof(uint64_t));
 	
 	if (r == NULL) {
 		free(a);

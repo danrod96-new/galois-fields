@@ -144,7 +144,7 @@ static int read_coeff(double v, uint64_t p, uint64_t *out)
 	return 0;
 }
 
-int gw_get_coeffs(scilabEnv env, scilabVar var, const char* fname, int pos, uint64_t p, uint64_t **coeffs, int *len)
+int gw_get_coeffs(scilabEnv env, scilabVar var, const char *fname, int pos, uint64_t p, uint64_t **coeffs, int *len)
 {
 	double *data = NULL;
 	int rows = 0, cols = 0, i;
@@ -204,11 +204,11 @@ int gw_get_field(scilabEnv env, scilabVar var, const char *fname, int pos, gw_fi
 
 	scilab_getDoubleArray(env, item, &data);
 
-	if (!is_integer(data[0]) || !gf_is_prime((uint64_t)data[0]) || data[0] > (double)GF_MAX_ORDER) {
+	if (!is_integer(data[0]) || !gf_is_prime((uint64_t) data[0]) || data[0] > (double) GF_MAX_ORDER) {
 		return field_error(fname, pos);
 	}
 
-	field->p = (uint64_t)data[0];
+	field->p = (uint64_t) data[0];
 
 	item = scilab_getListItem(env, var, 1);
 	

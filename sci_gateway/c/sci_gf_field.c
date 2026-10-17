@@ -16,10 +16,10 @@ int sci_gf_create_field(scilabEnv env, int nin, scilabVar *in, int nopt, scilabO
 {
 	static const char fname[] = "gf_create_field";
 	gw_field field;
-	uint64_t* coeffs = NULL;
+	uint64_t *coeffs = NULL;
 	int len = 0;
 	scilabVar list, elements;
-	double* table = NULL;
+	double *table = NULL;
 
 	if (gw_check_nin(fname, nin, 2, 3) || gw_get_prime(env, in[0], fname, 1, &field.p) || gw_get_degree(env, in[1], fname, 2, &field.n) || gw_check_order(fname, field.p, field.n, &field.q)) {
 		return 1;
