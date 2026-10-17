@@ -137,6 +137,11 @@ sources are in `help/en_US` and in `help/es_ES` (Spanish).
   language go in a sibling folder such as `help/fr_FR`, which `builder.sce`
   picks up automatically.
 
+## License
+
+This toolbox is released under the terms of the CeCILL license :
+http://www.cecill.info/index.en.html
+
 ## Author
 
 Copyright (C) 2009-2016  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
