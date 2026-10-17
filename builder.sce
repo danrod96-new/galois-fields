@@ -1,5 +1,3 @@
-// Builds the galois_fields toolbox: macros, C library and gateways.
-// Run it from Scilab:  exec("builder.sce", -1)
 mode(-1);
 lines(0);
 
