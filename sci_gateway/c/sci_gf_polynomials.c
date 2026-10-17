@@ -41,7 +41,7 @@ static int poly_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, const 
 	}
 
 	lr = op == GW_PMUL ? la + lb - 1 : (la > lb ? la : lb);
-	r = (uint64_t*)malloc(lr * sizeof(uint64_t));
+	r = (uint64_t*) malloc(lr * sizeof(uint64_t));
 	
 	if (r == NULL) {
 		free(a);
@@ -105,8 +105,8 @@ int sci_gf_poly_divide(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOp
 		return 1;
 	}
 
-	q = (uint64_t*)malloc(la * sizeof(uint64_t));
-	r = (uint64_t*)malloc(la * sizeof(uint64_t));
+	q = (uint64_t *) malloc(la * sizeof(uint64_t));
+	r = (uint64_t *) malloc(la * sizeof(uint64_t));
 	
 	if (q == NULL || r == NULL) {
 		free(a);
@@ -215,11 +215,11 @@ int sci_gf_poly_power(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt
 }
 
 /* tf = gf_is_prime(x), element-wise on a matrix of non-negative integers */
-int sci_gf_is_prime(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
+int sci_gf_is_prime(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 {
 	static const char fname[] = "gf_is_prime";
-	double* data = NULL;
-	int* res = NULL;
+	double *data = NULL;
+	int *res = NULL;
 	int rows = 0, cols = 0, i;
 
 	if (gw_check_nin(fname, nin, 1, 1) || gw_get_real(env, in[0], fname, 1, &data, &rows, &cols)) {
@@ -244,7 +244,7 @@ int sci_gf_is_prime(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* 
 }
 
 /* r = gf_mod(x, m): non-negative remainder of the integers x modulo m > 0 */
-int sci_gf_mod(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
+int sci_gf_mod(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 {
 	static const char fname[] = "gf_mod";
 	double *data = NULL, *res = NULL;

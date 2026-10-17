@@ -111,7 +111,7 @@ int sci_gf_is_primitive_polynomial(scilabEnv env, int nin, scilabVar *in, int no
 {
 	static const char fname[] = "gf_is_primitive_polynomial";
 	uint64_t p = 0, q = 0;
-	uint64_t* f = NULL;
+	uint64_t *f = NULL;
 	int n = 0, len = 0, result;
 
 	if (gw_check_nin(fname, nin, 3, 3) || gw_get_prime(env, in[1], fname, 2, &p) || gw_get_degree(env, in[2], fname, 3, &n) || gw_check_order(fname, p, n, &q) || gw_get_coeffs(env, in[0], fname, 1, p, &f, &len)) {
