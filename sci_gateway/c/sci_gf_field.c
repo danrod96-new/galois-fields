@@ -107,7 +107,7 @@ int sci_gf_default_primitive_polynomial(scilabEnv env, int nin, scilabVar *in, i
 }
 
 /* tf = gf_is_primitive_polynomial(f, p, n) */
-int sci_gf_is_primitive_polynomial(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
+int sci_gf_is_primitive_polynomial(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 {
 	static const char fname[] = "gf_is_primitive_polynomial";
 	uint64_t p = 0, q = 0;
