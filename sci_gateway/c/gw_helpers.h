@@ -12,8 +12,7 @@
 #include "galois_fields.h"
 
 /* A field as stored in Scilab: list(p, n, primitive_polynomial, elements). */
-typedef struct
-{
+typedef struct {
 	uint64_t p;
 	int n;
 	uint64_t q;
