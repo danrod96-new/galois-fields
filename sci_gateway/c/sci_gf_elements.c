@@ -73,7 +73,7 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 	count = ca >= cb ? ca : cb;
 	rows = ca >= cb ? ra : rb;
 	cols = ca >= cb ? cola : colb;
-	r = (uint64_t*) malloc((size_t) count * n * sizeof(uint64_t));
+	r = (uint64_t *) malloc((size_t) count * n * sizeof(uint64_t));
 	
 	if (r == NULL) {
 		free(a);
@@ -85,9 +85,9 @@ static int binary_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, cons
 	tables = op == GW_MUL || op == GW_DIV ? field_tables(&field, count) : NULL;
 
 	for (i = 0; i < count && status == 0; i++) {
-		const uint64_t* x = a + (ca == 1 ? 0 : i) * n;
-		const uint64_t* y = b + (cb == 1 ? 0 : i) * n;
-		uint64_t* z = r + i * n;
+		const uint64_t *x = a + (ca == 1 ? 0 : i) * n;
+		const uint64_t *y = b + (cb == 1 ? 0 : i) * n;
+		uint64_t *z = r + i * n;
 
 		switch (op) {
 			case GW_ADD:
