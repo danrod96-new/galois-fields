@@ -115,7 +115,7 @@ Every function has a help page with its arguments, a description and a
 worked example; start with `help galois_fields` for an overview. The page
 sources are in `help/en_US` and in `help/es_ES` (Spanish).
 
-## Latest changes
+## Summary of changes
 
 - Invalid arguments raise real Scilab errors, which you can catch with
   `try`/`catch`. The old functions displayed a message and returned 0.
