@@ -30,7 +30,7 @@ galois_fields 2.0.0 (2026-10-10)
       arithmetic demo.
     * Added unit tests (tests/unit_tests).
     * Added help pages for every function, an overview page, and the help
-      build (Scilab with Java only; skipped by scilab-cli).
+      build.
  -- Daniel E Rodriguez (UIS)
 
 campos_finitos 1.0
