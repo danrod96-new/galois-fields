@@ -144,4 +144,4 @@ http://www.cecill.info/index.en.html
 
 ## Author
 
-Copyright (C) 2009-2016  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
+Copyright (C) 2009-2026  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
