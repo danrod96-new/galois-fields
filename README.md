@@ -112,7 +112,7 @@ gf_minimal_polynomial(F, 3)          // [1 1 1 1 1] = 1 + x + x^2 + x^3 + x^4
 | `gf_is_zero(a)`, `gf_is_one(a)`, `gf_are_equal(a, b)` | Small helpers on coefficient arrays. |
 
 Every function has a help page with its arguments, a description and a
-worked example; start with `help galois_fields` for an overview. The page
+working example; start with `help galois_fields` for an overview. The page
 sources are in `help/en_US` and in `help/es_ES` (Spanish).
 
 ## Summary of changes
