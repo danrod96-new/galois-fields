@@ -33,6 +33,6 @@ galois_fields 2.0.0 (2026-10-10)
       build.
  -- Daniel E Rodriguez (UIS)
 
-campos_finitos 1.0
+galois_fields 1.0
     * Original release.
  -- Daniel E Rodriguez (UIS)
