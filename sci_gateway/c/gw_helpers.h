@@ -1,6 +1,6 @@
 /*
  * gw_helpers.h - Argument checking and conversion shared by the
- * galois_fields gateways (Scilab 6+ API).
+ * galois_fields gateways.
  *
  * Copyright (C) Daniel E Rodriguez - UIS.
  */
