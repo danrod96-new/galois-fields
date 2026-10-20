@@ -68,7 +68,7 @@ gf_to_exponential(F, c)           // 5: c is alpha^5
             <revision>
                 <revnumber>2.0.0</revnumber>
                 <revdescription>
-                    <para>Toolbox renamed from campos_finitos to galois_fields, with English function names, and ported to Scilab 6.1 and later.</para>
+                    <para>Refactoring of the function/toolbox.</para>
                 </revdescription>
             </revision>
         </revhistory>
