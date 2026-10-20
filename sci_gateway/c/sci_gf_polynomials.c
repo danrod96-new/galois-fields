@@ -266,6 +266,7 @@ int sci_gf_mod(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, 
       return 1;
 		}
 	}
+
 	out[0] = scilab_createDoubleMatrix2d(env, rows, cols, 0);
 	scilab_getDoubleArray(env, out[0], &res);
 
