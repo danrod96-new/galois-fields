@@ -329,7 +329,7 @@ scilabVar gw_create_elements(scilabEnv env, const gw_field *field, const uint64_
 		scilab_getDoubleArray(env, out, &values);
 
 		for (r = 0; r < count; r++) {
-			values[r] = (double)data[r];
+			values[r] = (double) data[r];
 		}
 
 		return out;
@@ -340,7 +340,7 @@ scilabVar gw_create_elements(scilabEnv env, const gw_field *field, const uint64_
 	
 	for (r = 0; r < count; r++) {
 		for (c = 0; c < n; c++) {
-			values[c * count + r] = (double)data[r * n + c];
+			values[c * count + r] = (double) data[r * n + c];
 		}
 	}
 
