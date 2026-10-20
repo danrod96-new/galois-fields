@@ -37,7 +37,7 @@
             <varlistentry>
                 <term>tf</term>
                 <listitem>
-                    <para><literal>%t</literal> if f is primitive over GF(p), <literal>%f</literal> otherwise.</para>
+                    <para><literal>T</literal> if f is primitive over GF(p), <literal>F</literal> otherwise.</para>
                 </listitem>
             </varlistentry>
         </variablelist>

@@ -25,7 +25,7 @@
             <varlistentry>
                 <term>tf</term>
                 <listitem>
-                    <para><literal>%t</literal> si a y b tienen el mismo tamaño y las mismas entradas, <literal>%f</literal> en caso contrario.</para>
+                    <para><literal>T</literal> si a y b tienen el mismo tamaño y las mismas entradas, <literal>F</literal> en caso contrario.</para>
                 </listitem>
             </varlistentry>
         </variablelist>
