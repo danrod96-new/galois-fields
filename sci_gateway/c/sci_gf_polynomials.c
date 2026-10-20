@@ -41,7 +41,7 @@ static int poly_op(scilabEnv env, int nin, scilabVar *in, scilabVar *out, const 
 	}
 
 	lr = op == GW_PMUL ? la + lb - 1 : (la > lb ? la : lb);
-	r = (uint64_t*) malloc(lr * sizeof(uint64_t));
+	r = (uint64_t *) malloc(lr * sizeof(uint64_t));
 	
 	if (r == NULL) {
 		free(a);
