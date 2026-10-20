@@ -84,7 +84,7 @@ int sci_gf_poly_subtract(scilabEnv env, int nin, scilabVar *in, int nopt, scilab
 }
 
 /* c = gf_poly_multiply(a, b, p) */
-int sci_gf_poly_multiply(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar* out)
+int sci_gf_poly_multiply(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt* opt, int nout, scilabVar *out)
 {
   return poly_op(env, nin, in, out, "gf_poly_multiply", GW_PMUL);
 }
@@ -141,7 +141,7 @@ int sci_gf_poly_divide(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOp
 }
 
 /* c = gf_poly_power(a, e, p) */
-int sci_gf_poly_power(scilabEnv env, int nin, scilabVar* in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
+int sci_gf_poly_power(scilabEnv env, int nin, scilabVar *in, int nopt, scilabOpt *opt, int nout, scilabVar *out)
 {
 	static const char fname[] = "gf_poly_power";
 	uint64_t p = 0, e = 0, *a = NULL, *result = NULL, *base = NULL, *tmp = NULL;
