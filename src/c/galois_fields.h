@@ -35,7 +35,7 @@
 #define GF_ERR_DIVISION_BY_ZERO 2
 #define GF_ERR_NOT_FOUND 3
 
-/* Integers */
+/***** Integers *****/
 
 /* 1 if n is prime, 0 otherwise. */
 GF_EXPORT int gf_is_prime(uint64_t n);
@@ -55,7 +55,7 @@ GF_EXPORT uint64_t gf_field_order(uint64_t p, int n, uint64_t limit);
 /* Smallest primitive root modulo the prime p. */
 GF_EXPORT uint64_t gf_primitive_root(uint64_t p);
 
-/* Primitive polynomials and fields */
+/***** Primitive polynomials and fields *****/
 
 /* 1 if f (n + 1 coefficients, f[n] != 0) is a primitive polynomial of
  * degree n over GF(p). p^n must not exceed GF_MAX_ORDER. */
@@ -101,7 +101,7 @@ GF_EXPORT void gf_tab_mul(const gf_tables *t, const uint64_t *a, const uint64_t 
 GF_EXPORT int gf_tab_div(const gf_tables *t, const uint64_t *a, const uint64_t *b, uint64_t *r);
 GF_EXPORT int gf_tab_pow(const gf_tables *t, const uint64_t *a, uint64_t e, uint64_t *r);
 
-/* Polynomials over GF(p) (any length, ascending order) */
+/***** Polynomials over GF(p) (any length, ascending order) *****/
 
 /* Degree of a (len coefficients), -1 for the zero polynomial. */
 GF_EXPORT int gf_poly_degree(const uint64_t *a, int len);
