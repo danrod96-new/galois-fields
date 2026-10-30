@@ -4,12 +4,14 @@
 GF(p) and GF(p^n). It covers:
 
 - building fields from a primitive polynomial;
-- element arithmetic: add, subtract, multiply, divide and power;
+- element arithmetic: add, subtract, multiply, divide, power;
 - arithmetic on polynomials over GF(p);
 - primitive and minimal polynomials;
 - primitive elements;
 - operation tables;
 - conversion between polynomial and exponential (α^k) notation.
+
+Author: Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
 
 ## Requirements
 
@@ -23,7 +25,7 @@ GF(p) and GF(p^n). It covers:
 From the toolbox folder:
 
 ```scilab
-exec builder.sce   // compiles the C library and gateways, builds macros and help pages
+exec builder.sce   // compiles the C library and gateways, builds macros and help
 exec loader.sce    // loads the toolbox into the current session
 ```
 
@@ -112,10 +114,10 @@ gf_minimal_polynomial(F, 3)          // [1 1 1 1 1] = 1 + x + x^2 + x^3 + x^4
 | `gf_is_zero(a)`, `gf_is_one(a)`, `gf_are_equal(a, b)` | Small helpers on coefficient arrays. |
 
 Every function has a help page with its arguments, a description and a
-working example; start with `help galois_fields` for an overview. The page
-sources are in `help/en_US` and in `help/es_ES` (Spanish).
+worked example; start with `help galois_fields` for an overview. The page
+sources are in `help/en_US`.
 
-## Summary of changes
+## Behaviour changes
 
 - Invalid arguments raise real Scilab errors, which you can catch with
   `try`/`catch`. The old functions displayed a message and returned 0.
@@ -133,15 +135,6 @@ sources are in `help/en_US` and in `help/es_ES` (Spanish).
 
 ## Not included yet
 
-- **Translations of the help.** Only English and Spanish pages exist. Pages in another
-  language go in a sibling folder such as `help/fr_FR`, which `builder.sce`
+- **Translations of the help.** Only English pages exist. Pages in another
+  language go in a sibling folder such as `help/es_ES`, which `builder.sce`
   picks up automatically.
-
-## License
-
-This toolbox is released under the terms of the CeCILL license :
-http://www.cecill.info/index.en.html
-
-## Author
-
-Copyright (C) 2009-2026  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
