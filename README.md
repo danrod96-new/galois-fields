@@ -4,28 +4,27 @@
 GF(p) and GF(p^n). It covers:
 
 - building fields from a primitive polynomial;
-- element arithmetic: add, subtract, multiply, divide, power;
+- element arithmetic: add, subtract, multiply, divide and power;
 - arithmetic on polynomials over GF(p);
 - primitive and minimal polynomials;
 - primitive elements;
 - operation tables;
 - conversion between polynomial and exponential (α^k) notation.
 
-Author: Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
-
 ## Requirements
 
 - Scilab 6.1 or later. Tested with Scilab 2024.0.0. It uses the Scilab 6 C
   gateway API (`api_scilab.h`, "csci6" gateways), which is the current API.
 - A C compiler that Scilab can use (`haveacompiler()` must return `T`): gcc
-  or clang on Linux/macOS, or the Visual Studio / MinGW toolbox on Windows.
+  on Linux, Visual Studio Build Tools on Windows, or clang on macOS. See
+  [Compiling on each system](#compiling-on-each-system) for the setup on each one.
 
 ## Building and loading
 
 From the toolbox folder:
 
 ```scilab
-exec builder.sce   // compiles the C library and gateways, builds macros and help
+exec builder.sce   // compiles the C library and gateways, builds macros and help pages
 exec loader.sce    // loads the toolbox into the current session
 ```
 
@@ -47,6 +46,95 @@ test_run(pwd(), [], ["no_check_error_output"])
 
 The demos ("Arithmetic in GF(2^4)" and "Hamming (7,4) error control") appear
 in the demo browser (`demo_gui()`) once the toolbox is loaded.
+
+## Compiling on each system
+
+Compiled binaries for Linux, Windows and macOS are available from ATOMS
+(`atomsInstall("galois_fields")`), which needs no compiler. Follow these steps
+only to build the toolbox from source.
+
+The steps are the same everywhere once a compiler is installed:
+
+1. Install Scilab 6.1 or later from <https://www.scilab.org/download>. Use the
+   full desktop version, since the help is built with its Java tools.
+2. Install a C/C++ compiler for your system (see below). Then restart Scilab
+   and check that it finds the compiler:
+
+   ```scilab
+   haveacompiler()    // must return T
+   ```
+
+3. Build, load and test the toolbox from its folder:
+
+   ```scilab
+   cd("<path>/galois_fields")
+   exec("builder.sce", -1)
+   exec("loader.sce", -1)
+   test_run(pwd(), [], ["no_check_error_output"])
+   ```
+
+4. Optionally, pack an ATOMS binary archive for this system with
+   `exec("make_atoms_archive.sce", -1)`. It checks that every built file is
+   present and writes `galois_fields-<version>-<os>.tar.gz` (or `.zip` on
+   Windows) next to the toolbox folder.
+
+Binaries only work on the system and Scilab version they were built with, so
+repeat these steps on each system and for each Scilab version you target.
+
+### Linux
+
+1. Install gcc, g++ and make:
+
+   ```sh
+   sudo apt install build-essential        # Debian, Ubuntu, Mint
+   sudo dnf install gcc gcc-c++ make       # Fedora, RHEL, Rocky
+   sudo pacman -S base-devel               # Arch, Manjaro
+   ```
+
+2. If you use your distribution's Scilab package rather than the scilab.org
+   download, also install its development headers when they are packaged
+   separately (for example `scilab-include` on Debian and Ubuntu).
+3. Follow the common steps. The build creates `src/c/libgalois_fields.so` and
+   `sci_gateway/c/libgateway_galois_fields.so`.
+
+A library built on a recent distribution may not load on older ones, because
+it needs at least the glibc version it was built against. To publish a binary
+that works on most systems, build it on an older, long-term-support release.
+
+### Windows (64-bit)
+
+1. Install the free **Build Tools for Visual Studio** from
+   <https://visualstudio.microsoft.com/downloads/> (under "Tools for Visual
+   Studio"). In the installer, select the **Desktop development with C++**
+   workload, which includes the MSVC compiler and the Windows SDK.
+   - Scilab 2023 and later: Visual Studio 2022.
+   - Scilab 6.1: Visual Studio 2019, because 6.1 does not detect newer
+     versions.
+2. Restart Scilab and check `haveacompiler()`. If it returns `F`, try the
+   other Visual Studio version, or on Scilab 6.x install MinGW from ATOMS with
+   `atomsInstall("mingw")` and restart Scilab.
+3. Keep the toolbox in a folder whose path has no spaces or accented letters,
+   such as `C:\scilab\galois_fields`, since some compilers fail on such paths.
+4. Follow the common steps. The build creates `src/c/libgalois_fields.dll` and
+   `sci_gateway/c/libgateway_galois_fields.dll`.
+
+### macOS
+
+1. Install Apple's command line tools, which provide the clang compiler:
+
+   ```sh
+   xcode-select --install
+   ```
+
+   The full Xcode app is not needed.
+2. Install the Scilab build that matches your Mac: Apple Silicon (arm64) or
+   Intel (x86_64). The first time, open Scilab with right-click → Open if
+   macOS blocks it.
+3. Follow the common steps. The build creates `src/c/libgalois_fields.dylib`
+   and `sci_gateway/c/libgateway_galois_fields.dylib`.
+
+The libraries match the architecture of the Scilab that built them. To publish
+for both kinds of Mac, build once with each Scilab build.
 
 ## Data conventions
 
@@ -114,10 +202,10 @@ gf_minimal_polynomial(F, 3)          // [1 1 1 1 1] = 1 + x + x^2 + x^3 + x^4
 | `gf_is_zero(a)`, `gf_is_one(a)`, `gf_are_equal(a, b)` | Small helpers on coefficient arrays. |
 
 Every function has a help page with its arguments, a description and a
-worked example; start with `help galois_fields` for an overview. The page
-sources are in `help/en_US`.
+working example; start with `help galois_fields` for an overview. The page
+sources are in `help/en_US` and in `help/es_ES` (Spanish).
 
-## Behaviour changes
+## Summary of changes
 
 - Invalid arguments raise real Scilab errors, which you can catch with
   `try`/`catch`. The old functions displayed a message and returned 0.
@@ -135,6 +223,15 @@ sources are in `help/en_US`.
 
 ## Not included yet
 
-- **Translations of the help.** Only English pages exist. Pages in another
-  language go in a sibling folder such as `help/es_ES`, which `builder.sce`
+- **Translations of the help.** Only English and Spanish pages exist. Pages in another
+  language go in a sibling folder such as `help/fr_FR`, which `builder.sce`
   picks up automatically.
+
+## License
+
+This toolbox is released under the terms of the CeCILL license :
+http://www.cecill.info/index.en.html
+
+## Author
+
+Copyright (C) 2009-2026  Daniel E Rodriguez — Universidad Industrial de Santander (UIS).
