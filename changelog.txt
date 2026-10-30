@@ -1,3 +1,9 @@
+galois_fields 2.1.1 (2026-10-30)
+    * Added make_atoms_archive.sce, which packs the built toolbox into an
+      ATOMS binary archive for the current system.
+    * README.md: added step-by-step compile instructions for Linux, Windows
+      and macOS.
+
 galois_fields 2.1.0 (2026-10-14)
     * Faster element arithmetic (C core and gateways):
       - GF(2^n) multiplication, division, powers and element tables work on
@@ -12,7 +18,6 @@ galois_fields 2.1.0 (2026-10-14)
       - Division in other extension fields without cached tables inverts
         with the extended Euclidean algorithm on polynomials.
     * Added Spanish (es_ES) help pages.
- -- Daniel E Rodriguez (UIS)
 
 galois_fields 2.0.0 (2026-10-10)
     * Ported to Scilab 6.1+ (tested with 2024.0.0): Scilab 6 C gateway API
@@ -31,8 +36,8 @@ galois_fields 2.0.0 (2026-10-10)
     * Added unit tests (tests/unit_tests).
     * Added help pages for every function, an overview page, and the help
       build.
- -- Daniel E Rodriguez (UIS)
 
 galois_fields 1.0
     * Original release.
+    
  -- Daniel E Rodriguez (UIS)

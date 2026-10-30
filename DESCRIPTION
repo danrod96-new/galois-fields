@@ -4,7 +4,7 @@ Title: Galois Fields
 
 Summary: Arithmetic in finite fields GF(p) and GF(p^n) and on polynomials over GF(p)
 
-Version: 2.1.0
+Version: 2.1.1
 
 Author: Daniel E Rodriguez
 
@@ -20,7 +20,7 @@ ScilabVersion: >= 6.1
 
 Depends:
 
-Date: 2026-10-27
+Date: 2026-10-30
 
 Description: Builds finite fields from primitive polynomials and provides
  element arithmetic (add, subtract, multiply, divide and power), arithmetic on
